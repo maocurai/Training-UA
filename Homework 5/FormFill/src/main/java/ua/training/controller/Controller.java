@@ -36,13 +36,14 @@ public class Controller {
     public void addNote() {
         Scanner sc = new Scanner(System.in);
         String loc = (View.bundle.getLocale().getLanguage().equals("ua")) ? "UA" : "LAT";
-        String regex = loc.equals("UA") ? REGEX_SURNAME_UA : REGEX_SURNAME_LAT;
+        String regex = loc.equals("UA") ? REGEX_SURNAME_AND_NAME_UA : REGEX_SURNAME_AND_NAME_LAT;
         model.setSurname(enterField(sc, regex, INPUT_STRING_SURNAME));
+        model.setSurname(enterField(sc, regex, INPUT_STRING_NAME));
         model.setNickname(enterField(sc, REGEX_NICKNAME, INPUT_STRING_NICKNAME));
         regex = loc.equals("UA") ? REGEX_PATRONYMIC_UA : REGEX_PATRONYMIC_LAT;
         model.setPatronymic(enterField(sc, regex, INPUT_STRING_PATRONYMIC));
         model.setMobilePhone(enterField(sc, REGEX_MOBILE_PHONE, INPUT_STRING_MOBILE_PHONE));
-//        model.setPatronymic(enterField(sc, regex, INPUT_STRING_PATRONYMIC));
+        model.setEmail(enterField(sc, REGEX_EMAIL, INPUT_STRING_EMAIL));
     }
 
     /**
