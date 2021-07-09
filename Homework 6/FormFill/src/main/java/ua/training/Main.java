@@ -11,9 +11,9 @@ public class Main {
         Notebook book = new Notebook();
         Controller controller = new Controller(book, new View());
         Note note1 = new Note();
-        note1.setNickname("bigdick2002");
+        note1.setNickname("newNote2002");
         Note note2 = new Note();
-        note2.setNickname("bigdick0220");
+        note2.setNickname("newNote0220");
         book.add(note1);
         book.add(note2);
         controller.addNote();
