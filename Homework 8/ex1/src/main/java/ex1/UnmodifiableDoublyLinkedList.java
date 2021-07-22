@@ -36,9 +36,11 @@ public class UnmodifiableDoublyLinkedList<T> extends AbstractList {
 
     public void addFirst(Object element) {
         Node newNode = createNode((T)element);
+        if(isEmpty()) {
+            tail = newNode;
+        }
         newNode.next = head;
         head = newNode;
-        System.out.println(head.getData());
         increaseSizeCounter();
     }
 
