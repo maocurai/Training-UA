@@ -22,10 +22,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_activity", joinColumns = @JoinColumn(name = "activity_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<Activity> activities;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_activity",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "activity_id"))
+    private Set<Activity> userActivitiesSet;
 
     public Long getId() {
         return id;
@@ -39,12 +41,12 @@ public class User implements UserDetails {
         return username;
     }
 
-    public Set<Activity> getActivities() {
-        return activities;
+    public Set<Activity> getUserActivitiesSet() {
+        return userActivitiesSet;
     }
 
-    public void setActivities(Set<Activity> activities) {
-        this.activities = activities;
+    public void setUserActivitiesSet(Set<Activity> userActivitiesSet) {
+        this.userActivitiesSet = userActivitiesSet;
     }
 
     @Override

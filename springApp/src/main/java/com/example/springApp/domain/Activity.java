@@ -22,6 +22,9 @@ public class Activity {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categoriesOfactivities;
 
+    @ManyToMany(mappedBy = "userActivitiesSet")
+    private Set<User> activityUsersSet;
+
     public Long getId() {
         return id;
     }

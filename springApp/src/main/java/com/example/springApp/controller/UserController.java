@@ -1,7 +1,10 @@
 package com.example.springApp.controller;
 
+import com.example.springApp.domain.Activity;
+import com.example.springApp.domain.Category;
 import com.example.springApp.domain.Role;
 import com.example.springApp.domain.User;
+import com.example.springApp.repos.ActivityRepo;
 import com.example.springApp.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,6 +26,9 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private ActivityRepo activityRepo;
+
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userRepo.findAll());
@@ -32,6 +39,7 @@ public class UserController {
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
+        model.addAttribute("activities", activityRepo.findAll());
         return "userEdit";
     }
 
@@ -51,6 +59,14 @@ public class UserController {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
+
+        Set<Activity> activities = new LinkedHashSet<>();
+        for (String key : form.keySet()) {
+            if (activityRepo.findByActivityname(key) != null) {
+                activities.add(activityRepo.findByActivityname(key));
+            }
+        }
+        user.setUserActivitiesSet(activities);
         userRepo.save(user);
         return "redirect:/user";
     }
