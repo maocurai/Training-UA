@@ -10,14 +10,16 @@ public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique=true)
     private String activityname;
 
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "activity_category",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    @ElementCollection(targetClass = Category.class, fetch = FetchType.EAGER)
     private Set<Category> categoriesOfactivities;
 
     public Long getId() {

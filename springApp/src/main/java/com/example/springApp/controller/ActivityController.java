@@ -37,34 +37,27 @@ public class ActivityController {
     public String addActivity(Map<String, Object> model,
                               Activity activity,
                               @RequestParam Map<String, String> form) {
-        if (!isActivityNameTaken(activity.getActivityname())) {
+        try {
             Set<Category> categories = new LinkedHashSet<>();
             activity.setCategoriesOfactivities(categories);
             for (String key : form.keySet()) {
                 if (categoryRepo.findByCategoryname(key) != null) {
-//                    System.out.println("key : " + key + " " + form.get(key));
                     activity.getCategoriesOfactivities().add(categoryRepo.findByCategoryname(key));
                 }
             }
             activityRepo.save(activity);
             model.put("addCategoryResult", "Activity successfully added");
-        } else {
+        } catch (Exception ex) {
             model.put("addCategoryResult", "Activity not added");
         }
         return "redirect:/adminActivity";
     }
 
-    public boolean isActivityNameTaken(String activityname) {
-        return activityRepo.findAll()
-                .stream()
-                .anyMatch(activity->activity.getActivityname().equals(activityname));
-    }
-
-    public boolean isPresentCategory(String categoryname) {
-        return categoryRepo.findAll()
-                .stream()
-                .anyMatch(activity->activity.getCategoryname().equals(categoryname));
-    }
+//    public boolean isPresentCategory(String categoryname) {
+//        return categoryRepo.findAll()
+//                .stream()
+//                .anyMatch(activity->activity.getCategoryname().equals(categoryname));
+//    }
 
 //    @GetMapping("{user}")
 //    public String userEditForm(@PathVariable User user, Model model) {

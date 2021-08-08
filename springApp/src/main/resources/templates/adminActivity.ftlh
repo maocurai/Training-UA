@@ -22,19 +22,24 @@
     <input type="hidden" name="_csrf" value="${_csrf.token}" />
 </form>
 </div>
+<h3><@spring.message "all.activities"/></h3>
 <table class="mt-3">
     <thead>
-        <tr>
-        <th><h3><@spring.message "all.activities"/></h3></th>
+        <th><@spring.message "activity.name"/></th>
+        <th><@spring.message "category.name"/></th>
         </tr>
     </thead>
     <tbody>
         <#list activities as activity>
             <tr>
                 <td>${activity.activityname}</td>
+                <td>
+                    <#list activity.categoriesOfactivities as category>
+                        ${category.categoryname}
+                    </#list>
+                </td>
             </tr>
         </#list>
     </tbody>
 </table>
-
 </@c.page>

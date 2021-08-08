@@ -1,16 +1,11 @@
 package com.example.springApp.controller;
 
 import com.example.springApp.domain.Category;
-import com.example.springApp.domain.Role;
-import com.example.springApp.domain.User;
 import com.example.springApp.repos.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
 import java.util.Map;
 
 @Controller
@@ -29,18 +24,12 @@ public class CategoryController {
 
     @PostMapping
     public String addCategory(Map<String, Object> model, Category category) {
-        if(!isCategoryNameTaken(category.getCategoryname())) {
+        try {
             categoryRepo.save(category);
             model.put("addCategoryResult", "Category successfully added");
-        } else {
+        } catch (Exception ex) {
             model.put("addCategoryResult", "Category already exists");
         }
         return "redirect:/adminCategory";
-    }
-
-    public boolean isCategoryNameTaken(String categoryname) {
-        return categoryRepo.findAll()
-                .stream()
-                .anyMatch(category->category.getCategoryname().equals(categoryname));
     }
 }
