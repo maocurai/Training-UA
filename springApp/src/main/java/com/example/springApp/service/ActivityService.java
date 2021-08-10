@@ -1,12 +1,10 @@
 package com.example.springApp.service;
 
-import com.example.springApp.domain.Activity;
 import com.example.springApp.repos.ActivityRepo;
-import com.example.springApp.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ActivityService {
 
     @Autowired
@@ -16,8 +14,4 @@ public class ActivityService {
         this.activityRepo = activityRepo;
     }
 
-//    @Override
-//    public Activity findByActivityname(String activityname) throws UsernameNotFoundException {
-//        return activityRepo.findByActivityname(activityname);
-//    }
 }

@@ -1,5 +1,8 @@
 package com.example.springApp.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -8,9 +11,10 @@ import java.util.Set;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private Long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String categoryname;
 
     @ManyToMany(mappedBy = "categoriesOfactivities")
@@ -30,5 +34,13 @@ public class Category {
 
     public void setCategoryname(String categoryname) {
         this.categoryname = categoryname;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
     }
 }

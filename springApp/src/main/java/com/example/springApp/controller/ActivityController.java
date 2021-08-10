@@ -7,13 +7,14 @@ import com.example.springApp.repos.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/adminActivity")
@@ -52,31 +53,4 @@ public class ActivityController {
         }
         return "redirect:/adminActivity";
     }
-
-//    public boolean isPresentCategory(String categoryname) {
-//        return categoryRepo.findAll()
-//                .stream()
-//                .anyMatch(activity->activity.getCategoryname().equals(categoryname));
-//    }
-
-//    @GetMapping("{user}")
-//    public String userEditForm(@PathVariable User user, Model model) {
-//        model.addAttribute("user", user);
-//        model.addAttribute("activities", user);
-//        return "userEdit";
-//    }
-
-//    @PostMapping
-//    public String activitySave(
-//            @RequestParam String activityname,
-//            @RequestParam String catregoryname,
-//            @RequestParam Map<String, String> form,
-//            @RequestParam("activityId") Activity activity
-//    ) {
-//        activity.setActivityname(activityname);
-////        activity.addCategory();
-//        activityRepo.save(activity);
-//        return "redirect:/activity";
-//    }
-
 }

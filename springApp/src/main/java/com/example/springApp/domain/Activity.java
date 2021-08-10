@@ -1,5 +1,8 @@
 package com.example.springApp.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,13 +12,14 @@ public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private Long id;
 
     @Column(unique=true)
     private String activityname;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "activity_category",
             joinColumns = @JoinColumn(name = "activity_id"),
