@@ -29,6 +29,10 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "activity_id"))
     private Set<Activity> userActivitiesSet;
 
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
+    }
+
     public Long getId() {
         return id;
     }

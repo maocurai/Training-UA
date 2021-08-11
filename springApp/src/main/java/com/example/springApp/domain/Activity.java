@@ -12,11 +12,12 @@ public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     private Long id;
 
     @Column(unique=true)
     private String activityname;
+
+    private boolean isConfirmedByAdmin;
 
 
     @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
@@ -51,5 +52,21 @@ public class Activity {
 
     public void setCategoriesOfactivities(Set<Category> categoriesOfactivities) {
         this.categoriesOfactivities = categoriesOfactivities;
+    }
+
+    public boolean isConfirmedByAdmin() {
+        return isConfirmedByAdmin;
+    }
+
+    public void setConfirmedByAdmin(boolean confirmedByAdmin) {
+        isConfirmedByAdmin = confirmedByAdmin;
+    }
+
+    public Set<User> getActivityUsersSet() {
+        return activityUsersSet;
+    }
+
+    public void setActivityUsersSet(Set<User> activityUsersSet) {
+        this.activityUsersSet = activityUsersSet;
     }
 }

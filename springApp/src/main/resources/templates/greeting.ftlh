@@ -1,8 +1,8 @@
-<#import "parts/common.ftlh" as c>
+<#import "parts/common2.ftlh" as c>
 <#import "parts/login.ftlh" as l>
 <#import "/spring.ftl" as spring/>
+<#include "parts/security.ftlh">
 
 <@c.page>
-<div>Hello, user</div>
-<a href="/main"><@spring.message "main.page"/></a>
+<p>Hello ${name}</p>
 </@c.page>

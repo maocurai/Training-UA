@@ -27,11 +27,10 @@ public class MvcConfig implements WebMvcConfigurer {
         lci.setParamName("lang");
         return lci;
     }
-    //SessionLocaleResolver
+
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
-//        resolver.setDefaultLocale(new Locale("ua","UA"));
         return resolver;
     }
 }

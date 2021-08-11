@@ -1,45 +1,54 @@
 <#import "parts/common2.ftlh" as c>
 <#import "parts/login.ftlh" as l>
 <#import "/spring.ftl" as spring/>
+<#include "parts/security.ftlh">
 
 <@c.page>
 <h1 class="mt-5"><@spring.message "activity.control"/></h1>
 <div class="row g-5 mt-3">
-<form action="/adminActivity" method="post">
-    <div class="col-md-4 col-lg-4 order-md-last">
-        <label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
-    </div>
-    <div class="col-md-4 col-lg-4 order-md-last dropdown">
-        <#list categories as category>
-            <div>
-                <label><input type="checkbox" name="${category.categoryname}"/>${category.categoryname}</label>
-            </div>
-        </#list>
-    </div>
-    <div class="col-md-4 col-lg-4 order-md-last">
-        <input type="submit" class="btn btn-outline-success" value="Add"/>
-    </div>
-    <input type="hidden" name="_csrf" value="${_csrf.token}" />
-</form>
+        <#if !isAdmin>
+        <a href="/user/${id}">Add activity</a>
+        </#if>
+
+        <#if isAdmin>
+        <form action="/adminActivity" method="post">
+            <label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
+
+        <div class="col-md-4 col-lg-4 order-md-last dropdown">
+            <#list categories as category>
+                <div>
+                    <label><input type="checkbox" name="${category.categoryname}"/>${category.categoryname}</label>
+                </div>
+            </#list>
+        </div>
+        <div class="col-md-4 col-lg-4 order-md-last">
+            <input type="submit" class="btn btn-outline-success" value="Add"/>
+        </div>
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+    </form>
+    </#if>
 </div>
-<h3><@spring.message "all.activities"/></h3>
-<table class="mt-3">
-    <thead>
-        <th><@spring.message "activity.name"/></th>
-        <th><@spring.message "category.name"/></th>
-        </tr>
-    </thead>
-    <tbody>
-        <#list activities as activity>
-            <tr>
-                <td>${activity.activityname}</td>
-                <td>
-                    <#list activity.categoriesOfactivities as category>
-                        ${category.categoryname}
-                    </#list>
-                </td>
+
+<#if isAdmin>
+    <h3><@spring.message "all.activities"/></h3>
+    <table class="mt-3">
+        <thead>
+            <th><@spring.message "activity.name"/></th>
+            <th><@spring.message "category.name"/></th>
             </tr>
-        </#list>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <#list activities as activity>
+                <tr>
+                    <td>${activity.activityname}</td>
+                    <td>
+                        <#list activity.categoriesOfactivities as category>
+                            ${category.categoryname}
+                        </#list>
+                    </td>
+                </tr>
+            </#list>
+        </tbody>
+    </table>
+</#if>
 </@c.page>
