@@ -18,7 +18,6 @@ import java.util.Set;
 
 @Controller
 @RequestMapping("/adminActivity")
-//@PreAuthorize("hasAuthority('ADMIN')")
 public class ActivityController {
 
     @Autowired

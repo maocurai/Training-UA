@@ -11,7 +11,6 @@ import java.util.Set;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     private Long id;
 
     @Column(unique = true)

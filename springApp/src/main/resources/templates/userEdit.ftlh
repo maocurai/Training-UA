@@ -10,15 +10,17 @@ User editor
     <form action="/user" method="post">
         <input type="text" name="username" value="${user.username}">
         <#list roles as role>
-        <div>
-            <label><input type="checkbox" name="${role}" ${user.roles?seq_contains(role)?string("checked", "")}>${role}</label>
-        </div>
+            <div>
+                <p><input type="radio" name="${role}">${role}</p>
+            </div>
         </#list>
         <h4>User's activities</h4>
         <table>
             <tbody>
-               <#list user.userActivitiesSet as activity>
-                  ${activity.activityname}
+                <#list usersActivities as userActivity>
+                    <#if userActivity.user.id == user.id>
+                      ${userActivity.activity.activityname}
+                    </#if>
                </#list>
             </tbody>
         </table>
@@ -36,7 +38,7 @@ User editor
             <button type="submit">Save</button>
     </form>
 </#if>
-
+<#if !isAdmin>
 <form action="/user" method="post">
     <h4>Add activity</h4>
     <div class="col-md-4 col-lg-4 order-md-last dropdown">
@@ -51,4 +53,5 @@ User editor
     <input type="hidden" value="${_csrf.token}" name="_csrf">
     <button type="submit">Save</button>
 </form>
+</#if>
 </@c.page>

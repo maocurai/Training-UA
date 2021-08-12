@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ActivityRepo extends JpaRepository<Activity, Long> {
     Activity findByActivityname(String activityname);
+    Activity findByid(Long id);
 }

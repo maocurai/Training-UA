@@ -1,21 +1,15 @@
 package com.example.springApp.controller;
 
-import com.example.springApp.domain.Activity;
-import com.example.springApp.domain.Category;
-import com.example.springApp.domain.Role;
-import com.example.springApp.domain.User;
+import com.example.springApp.domain.*;
 import com.example.springApp.repos.ActivityRepo;
+import com.example.springApp.repos.UserActivityRepo;
 import com.example.springApp.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -29,9 +23,14 @@ public class UserController {
     @Autowired
     private ActivityRepo activityRepo;
 
+    @Autowired
+    private UserActivityRepo userActivityRepo;
+
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userRepo.findAll());
+        System.out.println(userActivityRepo.findAll().size());
+        model.addAttribute("usersActivities", userActivityRepo.findAll());
         return "userList";
     }
 
@@ -40,6 +39,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         model.addAttribute("activities", activityRepo.findAll());
+        model.addAttribute("usersActivities", userActivityRepo.findAll());
         return "userEdit";
     }
 
@@ -50,23 +50,28 @@ public class UserController {
             @RequestParam("userId") User user
     ) {
         user.setUsername(username);
+
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
                 .collect(Collectors.toSet());
-        user.getRoles().clear();
         for (String key : form.keySet()) {
             if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
+                user.setRole(Role.valueOf(key));
             }
         }
 
-        Set<Activity> activities = new LinkedHashSet<>();
         for (String key : form.keySet()) {
-            if (activityRepo.findByActivityname(key) != null) {
-                activities.add(activityRepo.findByActivityname(key));
+            Activity byActivityname = activityRepo.findByActivityname(key);
+            if (byActivityname != null) {
+//                user.addUserActivity(
+                        userActivityRepo.save
+                        (new UserActivity(user, activityRepo.findByActivityname(key), false));
+//                );
             }
         }
-        user.setUserActivitiesSet(activities);
+//        for(UserActivity ua : user.getUserActivitySet()) {
+//            System.out.println(ua.getActivity().getActivityname());
+//        }
         userRepo.save(user);
         return "redirect:/user";
     }

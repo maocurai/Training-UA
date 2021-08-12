@@ -8,6 +8,7 @@
         name = user.getUsername()
         id = user.getId()
         isAdmin = user.isAdmin()
+        role = user.getRole()
     >
 <#else>
     <#assign

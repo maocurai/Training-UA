@@ -4,8 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "usr")
@@ -17,20 +16,18 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_activity",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "activity_id"))
-    private Set<Activity> userActivitiesSet;
+//    @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)
+//    private Set<UserActivity> userActivitySet = new HashSet<>();
 
     public boolean isAdmin() {
-        return roles.contains(Role.ADMIN);
+        return role.equals(Role.ADMIN);
+    }
+
+    public String getRole() {
+        return role.toString();
     }
 
     public Long getId() {
@@ -43,14 +40,6 @@ public class User implements UserDetails {
 
     public String getUsername() {
         return username;
-    }
-
-    public Set<Activity> getUserActivitiesSet() {
-        return userActivitiesSet;
-    }
-
-    public void setUserActivitiesSet(Set<Activity> userActivitiesSet) {
-        this.userActivitiesSet = userActivitiesSet;
     }
 
     @Override
@@ -79,7 +68,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return Collections.singleton(role);
     }
 
     public String getPassword() {
@@ -98,11 +87,15 @@ public class User implements UserDetails {
         this.active = active;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+//    public Set<UserActivity> getUserActivitySet() {
+//        return userActivitySet;
+//    }
+//
+//    public void setUserActivitySet(Set<UserActivity> userActivitySet) {
+//        this.userActivitySet = userActivitySet;
+//    }
 }

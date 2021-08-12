@@ -16,11 +16,9 @@ List of users
         <#list users as user>
             <tr>
                 <td>${user.username}</td>
-                <td><#list user.roles as role>${role}<#sep>, </#list></td>
+                <td>${user.role}</td>
                 <td>
-                    <#list user.userActivitiesSet as activity>
-                        ${activity.activityname}
-                    </#list>
+
                 </td>
                 <td><a href="/user/${user.id}" class="btn btn-outline-success" >edit</a></td>
             </tr>
