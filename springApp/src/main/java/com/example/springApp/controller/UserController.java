@@ -29,14 +29,13 @@ public class UserController {
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userRepo.findAll());
-        System.out.println(userActivityRepo.findAll().size());
         model.addAttribute("usersActivities", userActivityRepo.findAll());
         return "userList";
     }
 
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model) {
-        model.addAttribute("user", user);
+        model.addAttribute("userToEdit", user);
         model.addAttribute("roles", Role.values());
         model.addAttribute("activities", activityRepo.findAll());
         model.addAttribute("usersActivities", userActivityRepo.findAll());
@@ -47,7 +46,8 @@ public class UserController {
     public String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
-            @RequestParam("userId") User user
+            @RequestParam("userId") User user,
+            @RequestParam("newActivityStatus") String newActivityStatus
     ) {
         user.setUsername(username);
 
@@ -63,15 +63,10 @@ public class UserController {
         for (String key : form.keySet()) {
             Activity byActivityname = activityRepo.findByActivityname(key);
             if (byActivityname != null) {
-//                user.addUserActivity(
-                        userActivityRepo.save
-                        (new UserActivity(user, activityRepo.findByActivityname(key), false));
-//                );
+                userActivityRepo.save
+                        (new UserActivity(user, activityRepo.findByActivityname(key), Status.valueOf(newActivityStatus)));
             }
         }
-//        for(UserActivity ua : user.getUserActivitySet()) {
-//            System.out.println(ua.getActivity().getActivityname());
-//        }
         userRepo.save(user);
         return "redirect:/user";
     }

@@ -6,7 +6,7 @@
     <#assign
         user = Session.SPRING_SECURITY_CONTEXT.authentication.principal
         name = user.getUsername()
-        id = user.getId()
+        loggedUserId = user.getId()
         isAdmin = user.isAdmin()
         role = user.getRole()
     >

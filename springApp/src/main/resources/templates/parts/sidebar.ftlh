@@ -7,6 +7,7 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
+
     <#if isAdmin>
       <li class="nav-item">
         <a href="/user" class="nav-link link-dark" aria-current="page">
@@ -15,7 +16,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link link-dark" aria-current="page">
+        <a href="/userRequests" class="nav-link link-dark" aria-current="page">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
           <@spring.message "admin.user.requests"/>
         </a>
@@ -27,12 +28,14 @@
          </a>
       </li>
     </#if>
+
       <li>
-        <a href="/adminActivity" class="nav-link link-dark">
+        <a href="/adminActivity/${loggedUserId}" class="nav-link link-dark">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
           <@spring.message "all.activities"/>
         </a>
       </li>
+
     </ul>
   </div>
 </#macro>

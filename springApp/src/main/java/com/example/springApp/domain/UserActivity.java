@@ -18,15 +18,16 @@ public class UserActivity {
     @JoinColumn(name = "activity_id")
     private Activity activity;
 
-    boolean isConfirmed;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     public UserActivity() {}
 
-    public UserActivity(User user, Activity activity, boolean isConfirmed) {
+    public UserActivity(User user, Activity activity, Status status) {
         this.id = new AdminConfirmationKey(user.getId(), activity.getId());
         this.user = user;
         this.activity = activity;
-        this.isConfirmed = isConfirmed;
+        this.status = status;
     }
 
     public AdminConfirmationKey getId() {
@@ -53,11 +54,11 @@ public class UserActivity {
         this.activity = activity;
     }
 
-    public boolean isConfirmed() {
-        return isConfirmed;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setConfirmed(boolean confirmed) {
-        isConfirmed = confirmed;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

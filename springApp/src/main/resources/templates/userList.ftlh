@@ -18,7 +18,11 @@ List of users
                 <td>${user.username}</td>
                 <td>${user.role}</td>
                 <td>
-
+                    <#list usersActivities as userActivity>
+                      <#if userActivity.user.id == user.id>
+                            ${userActivity.activity.activityname}
+                      </#if>
+                    </#list>
                 </td>
                 <td><a href="/user/${user.id}" class="btn btn-outline-success" >edit</a></td>
             </tr>

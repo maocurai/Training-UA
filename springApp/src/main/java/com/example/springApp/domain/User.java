@@ -19,9 +19,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)
-//    private Set<UserActivity> userActivitySet = new HashSet<>();
-
     public boolean isAdmin() {
         return role.equals(Role.ADMIN);
     }

@@ -1,16 +1,13 @@
 package com.example.springApp.controller;
 
-import com.example.springApp.domain.Activity;
-import com.example.springApp.domain.Category;
+import com.example.springApp.domain.*;
 import com.example.springApp.repos.ActivityRepo;
 import com.example.springApp.repos.CategoryRepo;
+import com.example.springApp.repos.UserActivityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -26,12 +23,25 @@ public class ActivityController {
     @Autowired
     private CategoryRepo categoryRepo;
 
-    @GetMapping
-    public String activityList(Model model) {
+    @Autowired
+    private UserActivityRepo userActivityRepo;
+
+    @GetMapping("{user}")
+    public String userEditForm(@PathVariable User user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("roles", Role.values());
         model.addAttribute("activities", activityRepo.findAll());
-        model.addAttribute("categories", categoryRepo.findAll());
+        model.addAttribute("usersActivities", userActivityRepo.findByuserId(user.getId()));
         return "adminActivity";
     }
+
+//    @GetMapping
+//    public String activityList(Model model) {
+//        model.addAttribute("activities", activityRepo.findAll());
+//        model.addAttribute("categories", categoryRepo.findAll());
+//        model.addAttribute("userActivities", userActivityRepo.findAll());
+//        return "adminActivity";
+//    }
 
     @PostMapping
     public String addActivity(Map<String, Object> model,
