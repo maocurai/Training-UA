@@ -6,7 +6,7 @@
 <@c.page>
 User requests
 
-<table>
+<table class="table table-striped mt-3">
     <#list usersActivities as userActivity>
     <form action="/ad" method="post">
           <tr>

@@ -11,7 +11,7 @@
     </div>
     <div class="col-md-6 col-lg-6 order-md-last">
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
-        <input type="submit" class="btn btn-outline-success" value="Add"/>
+        <button class="btn btn-outline-success"><@spring.message "add"/></button>
     </div>
 </form>
 </div>
@@ -26,8 +26,8 @@
         <form action="/adminCategory/delete" method="post">
             <tr>
                 <td>${category.categoryname}</td>
-                <td><a href="/adminCategory/${category.id}" class="btn btn-outline-success" >Edit</a></td>
-                <td><input type="submit" class="btn btn-outline-alarm" value="Delete"/><td>
+                <td><a href="/adminCategory/${category.id}" class="btn btn-outline-success"><@spring.message "edit"/></a></td>
+                <td><button class="btn btn-outline-danger"><@spring.message "delete"/></button><td>
                 <input type="hidden" name="categoryname" value="${category.categoryname}"/>
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
             </tr>

@@ -1,8 +1,10 @@
 package com.example.springApp.controller;
 
+import com.example.springApp.domain.Activity;
 import com.example.springApp.domain.AdminConfirmationKey;
 import com.example.springApp.domain.Status;
 import com.example.springApp.domain.UserActivity;
+import com.example.springApp.repos.ActivityRepo;
 import com.example.springApp.repos.UserActivityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,9 @@ import java.util.List;
 
     @Autowired
     private UserActivityRepo userActivityRepo;
+
+    @Autowired
+    private ActivityRepo activityRepo;
 
     @GetMapping("/userRequests")
     public String RequestsList(Model model) {
@@ -44,9 +49,26 @@ import java.util.List;
 
     public void doActionDueToStatus(UserActivity userActivity, Status status) {
         switch (status) {
-            case ADD_REQUEST: userActivityRepo.save(userActivity); break;
-            case DELETE_REQUEST: userActivityRepo.delete(userActivity); break;
+            case ADD_REQUEST:
+                userActivity.setActivity(increaseCounterAndSave(userActivity.getActivity()));
+                userActivityRepo.save(userActivity);
+            break;
+            case DELETE_REQUEST:
+                userActivity.setActivity(decreaseCounterAndSave(userActivity.getActivity()));
+                userActivityRepo.delete(userActivity);
         }
+    }
+
+    public Activity increaseCounterAndSave(Activity activity) {
+        activity.increaseCounter();
+        activityRepo.save(activity);
+        return activity;
+    }
+
+    public Activity decreaseCounterAndSave(Activity activity) {
+        activity.decreaseCounter();
+        activityRepo.save(activity);
+        return activity;
     }
 
 

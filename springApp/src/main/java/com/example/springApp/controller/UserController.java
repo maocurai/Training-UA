@@ -3,6 +3,7 @@ package com.example.springApp.controller;
 import com.example.springApp.domain.*;
 import com.example.springApp.repos.ActivityRepo;
 import com.example.springApp.repos.UserActivityRepo;
+import com.example.springApp.repos.UserActivityTimeRepo;
 import com.example.springApp.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,10 +27,14 @@ public class UserController {
     @Autowired
     private UserActivityRepo userActivityRepo;
 
+    @Autowired
+    private UserActivityTimeRepo userActivityTimeRepo;
+
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userRepo.findAll());
         model.addAttribute("usersActivities", userActivityRepo.findAll());
+        model.addAttribute("usersActivitiesTime", userActivityTimeRepo.findAll());
         return "userList";
     }
 
@@ -49,6 +54,7 @@ public class UserController {
             @RequestParam("userId") User user,
             @RequestParam("newActivityStatus") String newActivityStatus
     ) {
+        System.out.println(username);
         user.setUsername(username);
 
         Set<String> roles = Arrays.stream(Role.values())
@@ -63,8 +69,10 @@ public class UserController {
         for (String key : form.keySet()) {
             Activity byActivityname = activityRepo.findByActivityname(key);
             if (byActivityname != null) {
+                byActivityname.increaseCounter();
+                activityRepo.save(byActivityname);
                 userActivityRepo.save
-                        (new UserActivity(user, activityRepo.findByActivityname(key), Status.valueOf(newActivityStatus)));
+                        (new UserActivity(user, byActivityname, Status.valueOf(newActivityStatus)));
             }
         }
         userRepo.save(user);

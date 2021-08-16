@@ -16,7 +16,7 @@ public class Category {
     @Column(unique = true)
     private String categoryname;
 
-    @ManyToMany(mappedBy = "categoriesOfactivities")
+    @OneToMany(mappedBy="category")
     private Set<Activity> activities;
 
     public Long getId() {

@@ -1,62 +1,81 @@
 <#import "parts/common2.ftlh" as c>
 <#import "parts/login.ftlh" as l>
-<#import "/spring.ftl" as spring/>
+<#import "/spring.ftl" as spring>
 <#include "parts/security.ftlh">
+<#import "parts/pager.ftlh" as p>
 
 <@c.page>
 <h1 class="mt-5"><@spring.message "activity.control"/></h1>
         <#if !isAdmin>
-        <a href="/user/${loggedUserId}">Add activity</a>
-                <label><@spring.message "all.activities"/></label>
-                <table class="mt-3">
-                    <#list usersActivities as userActivity>
-                    <form action="/ur" method="post">
-                       <tr>
-                           <td>${userActivity.activity.activityname}</td>
+            <h3><@spring.message "all.activities"/></h3>
+            <table class="table table-striped mt-3">
+                <#list usersActivities as userActivity>
+                    <tr>
+                        <td>${userActivity.activity.activityname}</td>
+                        <form action="/adminActivity/${loggedUserId}/time" method="post">
+                            <td><input type="datetime-local" name="activity-start"></td>
+                            <td><input type="datetime-local" name="activity-end"></td>
+                            <td><button>Set time</button></td>
+                            <input type="hidden" name="activityId" value="${userActivity.activity.id}" />
+                            <input type="hidden" name="userId" value="${loggedUserId}" />
+                            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                        </form>
+                   <form action="/ur" method="post">
                            <td><button name="newActivityStatus" value="DELETE_REQUEST">Delete</button></td>
-                       </tr>
-                       <input type="hidden" name="activityId" value="${userActivity.activity.id}" />
-                       <input type="hidden" name="userId" value="${loggedUserId}" />
-                       <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                    </tr>
+                    <input type="hidden" name="activityId" value="${userActivity.activity.id}" />
+                    <input type="hidden" name="userId" value="${loggedUserId}" />
+                    <input type="hidden" name="_csrf" value="${_csrf.token}" />
                     </form>
-                    </#list>
-                <table class="mt-3">
+                </#list>
+            </table>
+            <a href="/user/${loggedUserId}" class="btn btn-outline-success" ><@spring.message "add"/></a>
         </#if>
 
 <#if isAdmin>
-<form action="/adminActivity" method="post">
-<label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
-    <div class="col-md-4 col-lg-4 order-md-last dropdown">
-        <#list categories as category>
-            <div>
-                <label><input type="checkbox" name="${category.categoryname}"/>${category.categoryname}</label>
-            </div>
-        </#list>
-    </div>
-    <div class="col-md-4 col-lg-4 order-md-last">
-        <input type="submit" class="btn btn-outline-success" value="Add"/>
-    </div>
-    <input type="hidden" name="_csrf" value="${_csrf.token}" />
-</form>
     <h3><@spring.message "all.activities"/></h3>
-    <table class="mt-3">
+    <form action="/adminActivity" id="categoryForm" method="get">
+    <label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
+
+            <select name="categoryname">
+                <#list categories as category>
+                <option value="${category.categoryname}">${category.categoryname}</option>
+                </#list>
+            </select>
+            <button class="btn btn-outline-success"><@spring.message "add"/></button>
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+    </form>
+
+<form action="/adminActivity/filter" id="filterForm" method="get">
+    <select name="filter">
+        <#list categories as category>
+            <option value="${category.id}">${category.categoryname}</option>
+        </#list>
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+    </select>
+    <button form="filterForm">Show</button>
+</form>
+
+<form action="/adminActivity/sort" id="sortingForm" method="get">
+    <table class="table table-striped mt-3">
         <thead>
-            <th><@spring.message "activity.name"/></th>
-            <th><@spring.message "category.name"/></th>
-            </tr>
+            <th scope="col"><button form="sortingForm" name="orderField" value="activityname"><@spring.message "activity.name"/></button></th>
+            <th scope="col">
+                <button form="sortingForm" name="orderField" value="category.categoryname"><@spring.message "category.name"/></button>
+            </th>
+            <th scope="col"><button form="sortingForm" name="orderField" value="usersCounter">Users count</button></th>
+            <input type="hidden" name="currentOrderDirection" value="${currentOrderDirection}"/>
         </thead>
         <tbody>
             <#list activities as activity>
                 <tr>
                     <td>${activity.activityname}</td>
-                    <td>
-                        <#list activity.categoriesOfactivities as category>
-                            ${category.categoryname}
-                        </#list>
-                    </td>
+                    <td>${activity.category.categoryname}</td>
+                    <td>${activity.usersCounter}</td>
                 </tr>
             </#list>
         </tbody>
     </table>
+    </form>
 </#if>
 </@c.page>

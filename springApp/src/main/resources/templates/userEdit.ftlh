@@ -7,7 +7,7 @@
 <#if isAdmin>
 User editor
     <form action="/user" method="post">
-        <input type="text" name="username" value="${userToEdit.username}">
+        <input type="text" name="username" placeholder="${userToEdit.username}" value="${userToEdit.username}">
         <#list roles as role>
             <div>
                 <p><input type="radio" name="${role}">${role}</p>
@@ -32,10 +32,9 @@ User editor
                     </div>
                 </#list>
             </div>
-            <input type="hidden" name="username" value="${userToEdit.username}">
             <input type="hidden" value="${userToEdit.id}" name="userId">
             <input type="hidden" value="${_csrf.token}" name="_csrf">
-            <button type="submit">Save</button>
+            <button type="submit" name="newActivityStatus" value="CONFIRMED">Save</button>
     </form>
 
 <#else>

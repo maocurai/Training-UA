@@ -1,7 +1,6 @@
 package com.example.springApp.domain;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "actvt")
@@ -14,12 +13,11 @@ public class Activity {
     @Column(unique=true)
     private String activityname;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "activity_category",
-            joinColumns = @JoinColumn(name = "activity_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categoriesOfactivities;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="category_id", nullable=false)
+    private Category category;
+
+    private Integer usersCounter = 0;
 
     public Long getId() {
         return id;
@@ -37,11 +35,27 @@ public class Activity {
         this.activityname = activityname;
     }
 
-    public Set<Category> getCategoriesOfactivities() {
-        return categoriesOfactivities;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoriesOfactivities(Set<Category> categoriesOfactivities) {
-        this.categoriesOfactivities = categoriesOfactivities;
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Integer getUsersCounter() {
+        return usersCounter;
+    }
+
+    public void setUsersCounter(Integer usersCounter) {
+        this.usersCounter = usersCounter;
+    }
+
+    public void increaseCounter() {
+        this.usersCounter++;
+    }
+
+    public void decreaseCounter() {
+        this.usersCounter--;
     }
 }
