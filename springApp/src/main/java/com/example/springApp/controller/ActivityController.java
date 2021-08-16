@@ -1,10 +1,10 @@
 package com.example.springApp.controller;
 
 import com.example.springApp.domain.*;
-import com.example.springApp.repos.ActivityRepo;
-import com.example.springApp.repos.CategoryRepo;
-import com.example.springApp.repos.UserActivityRepo;
-import com.example.springApp.repos.UserActivityTimeRepo;
+import com.example.springApp.repos.*;
+import com.example.springApp.service.ActivityService;
+import com.example.springApp.service.CategoryService;
+import com.example.springApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -18,11 +18,11 @@ import java.util.Map;
 @RequestMapping("/adminActivity")
 public class ActivityController {
 
-    @Autowired
-    private ActivityRepo activityRepo;
+    private ActivityService activityService;
 
-    @Autowired
-    private CategoryRepo categoryRepo;
+    private CategoryService categoryService;
+
+    private UserService userService;
 
     @Autowired
     private UserActivityRepo userActivityRepo;
@@ -30,12 +30,13 @@ public class ActivityController {
     @Autowired
     private UserActivityTimeRepo userActivityTimeRepo;
 
+
     @GetMapping("{user}")
     public String userActivityPage(@PathVariable User user,
                                    Model model){
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
-        model.addAttribute("activities", activityRepo.findAll());
+        model.addAttribute("activities", activityService.findAll());
         model.addAttribute("usersActivities", userActivityRepo.findByuserId(user.getId()));
         return "adminActivity";
     }
@@ -50,9 +51,9 @@ public class ActivityController {
 
     @GetMapping
     public String activityList(Model model) {
-        model.addAttribute("activities", activityRepo.findAll());
+        model.addAttribute("activities", activityService.findAll());
         model.addAttribute("currentOrderDirection", "ASC");
-        model.addAttribute("categories", categoryRepo.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         return "adminActivity";
     }
 
@@ -61,9 +62,9 @@ public class ActivityController {
                                @RequestParam(required = false) String orderField,
                                @RequestParam(required = false) String currentOrderDirection
     ) {
-        model.addAttribute("activities", activityRepo.findAll(getSorting(orderField, currentOrderDirection)));
+        model.addAttribute("activities", activityService.findAllAndSort(getSorting(orderField, currentOrderDirection)));
         model.addAttribute("currentOrderDirection", changeSortingDirection(currentOrderDirection));
-        model.addAttribute("categories", categoryRepo.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         return "adminActivity";
     }
 
@@ -74,8 +75,8 @@ public class ActivityController {
     ) {
         System.out.println(filter);
         model.addAttribute("currentOrderDirection", "ASC");
-        model.addAttribute("activities", activityRepo.findByCategoryId(Long.valueOf(filter)));
-        model.addAttribute("categories", categoryRepo.findAll());
+        model.addAttribute("activities", activityService.findByCategoryId(Long.valueOf(filter)));
+        model.addAttribute("categories", categoryService.findAll());
         return "adminActivity";
     }
 
@@ -85,12 +86,12 @@ public class ActivityController {
                               @RequestParam Map<String, String> form) {
         try {
             for (String key : form.keySet()) {
-                System.out.println("key: " + key + " value: " + form.get(key));
-                if (categoryRepo.findByCategoryname(form.get(key)) != null) {
-                    activity.setCategory(categoryRepo.findByCategoryname(form.get(key)));
+                Category category = categoryService.loadCategoryByCategoryname(form.get(key));
+                if (category != null) {
+                    activity.setCategory(category);
                 }
             }
-            activityRepo.save(activity);
+            activityService.save(activity);
             model.put("addCategoryResult", "Activity successfully added");
         } catch (Exception ex) {
             model.put("addCategoryResult", "Activity not added");
@@ -107,6 +108,8 @@ public class ActivityController {
     ){
         UserActivityTime userActivityTime = new UserActivityTime(
                 new AdminConfirmationKey(Long.valueOf(userId), Long.valueOf(activityId)),
+                userService.findByUserId(Long.valueOf(userId)),
+                activityService.findById(Long.valueOf(activityId)),
                 LocalDateTime.parse(activityStart), LocalDateTime.parse(activityEnd));
         userActivityTimeRepo.save(userActivityTime);
         return ("redirect:/adminActivity/" + userId);

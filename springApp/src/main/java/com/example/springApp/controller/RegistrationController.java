@@ -3,6 +3,7 @@ package com.example.springApp.controller;
 import com.example.springApp.domain.Role;
 import com.example.springApp.domain.User;
 import com.example.springApp.repos.UserRepo;
+import com.example.springApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,8 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
-    @Autowired
-    private UserRepo userRepo;
+
+    private UserService userService;
 
     @GetMapping("/registration")
     public String registration() {
@@ -22,7 +23,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(User user, Map<String, Object> model) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
+        User userFromDb = userService.loadUserByUsername(user.getUsername());
 
         if (userFromDb != null) {
             model.put("message", "User exists!");
@@ -30,7 +31,7 @@ public class RegistrationController {
         }
         user.setActive(true);
         user.setRole(Role.USER);
-        userRepo.save(user);
+        userService.save(user);
         return "redirect:/login";
     }
 }

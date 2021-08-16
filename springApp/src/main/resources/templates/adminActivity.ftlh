@@ -9,13 +9,27 @@
         <#if !isAdmin>
             <h3><@spring.message "all.activities"/></h3>
             <table class="table table-striped mt-3">
+            <thead>
+                    <tr>
+                        <th><@spring.message "activity.name"/></th>
+                        <th>Activity start</th>
+                        <th>Activity end</th>
+                    </tr>
+                </thead>
+            <tbody>
                 <#list usersActivities as userActivity>
                     <tr>
                         <td>${userActivity.activity.activityname}</td>
                         <form action="/adminActivity/${loggedUserId}/time" method="post">
+                        <#if userActivity.isConfirmed()>
                             <td><input type="datetime-local" name="activity-start"></td>
                             <td><input type="datetime-local" name="activity-end"></td>
                             <td><button>Set time</button></td>
+                        <#elseif userActivity.isDenied()>
+                        <td colspan="2"><@spring.message "admin.denied"/></td>
+                        <#else >
+                        <td colspan="2"><@spring.message "admin.processing"/></td>
+                        </#if>
                             <input type="hidden" name="activityId" value="${userActivity.activity.id}" />
                             <input type="hidden" name="userId" value="${loggedUserId}" />
                             <input type="hidden" name="_csrf" value="${_csrf.token}" />
@@ -28,6 +42,7 @@
                     <input type="hidden" name="_csrf" value="${_csrf.token}" />
                     </form>
                 </#list>
+                </tbody>
             </table>
             <a href="/user/${loggedUserId}" class="btn btn-outline-success" ><@spring.message "add"/></a>
         </#if>

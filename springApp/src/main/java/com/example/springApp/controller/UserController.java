@@ -5,6 +5,7 @@ import com.example.springApp.repos.ActivityRepo;
 import com.example.springApp.repos.UserActivityRepo;
 import com.example.springApp.repos.UserActivityTimeRepo;
 import com.example.springApp.repos.UserRepo;
+import com.example.springApp.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +22,7 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private ActivityRepo activityRepo;
+    private ActivityService activityService;
 
     @Autowired
     private UserActivityRepo userActivityRepo;
@@ -38,12 +38,21 @@ public class UserController {
         return "userList";
     }
 
+    @GetMapping("/info/{user}")
+    public String userMore(@PathVariable User user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("usersActivities", userActivityRepo.findByuserId(user.getId()));
+        model.addAttribute("usersActivitiesTime", userActivityTimeRepo.findByuserId(user.getId()));
+        return "userInfo";
+    }
+
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("userToEdit", user);
         model.addAttribute("roles", Role.values());
-        model.addAttribute("activities", activityRepo.findAll());
-        model.addAttribute("usersActivities", userActivityRepo.findAll());
+        model.addAttribute("activities", activityService.findAll());
+        model.addAttribute("NotUsersActivities", activityService.findByUserIdNotUsersActivities(user.getId()));
+        model.addAttribute("usersActivities", userActivityRepo.findByuserId(user.getId()));
         return "userEdit";
     }
 
@@ -67,10 +76,10 @@ public class UserController {
         }
 
         for (String key : form.keySet()) {
-            Activity byActivityname = activityRepo.findByActivityname(key);
+            Activity byActivityname = activityService.findByName(key);
             if (byActivityname != null) {
                 byActivityname.increaseCounter();
-                activityRepo.save(byActivityname);
+                activityService.save(byActivityname);
                 userActivityRepo.save
                         (new UserActivity(user, byActivityname, Status.valueOf(newActivityStatus)));
             }

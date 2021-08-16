@@ -1,5 +1,6 @@
 package com.example.springApp.service;
 
+import com.example.springApp.domain.User;
 import com.example.springApp.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,15 @@ public class UserService implements UserDetailsService {
         this.userRepo = userRepo;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByUsername(username);
+    }
+
+    public User findByUserId(Long id) {
+        return userRepo.findByid(id);
+    }
+
+    public void save(User user) {
+        userRepo.save(user);
     }
 }

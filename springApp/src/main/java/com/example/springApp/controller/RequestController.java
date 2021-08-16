@@ -6,33 +6,34 @@ import com.example.springApp.domain.Status;
 import com.example.springApp.domain.UserActivity;
 import com.example.springApp.repos.ActivityRepo;
 import com.example.springApp.repos.UserActivityRepo;
+import com.example.springApp.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
-//@RequestMapping("/userRequests")
+@RequestMapping("/userRequests")
     public class RequestController {
 
     @Autowired
     private UserActivityRepo userActivityRepo;
 
-    @Autowired
-    private ActivityRepo activityRepo;
+    private ActivityService activityService;
 
-    @GetMapping("/userRequests")
+    @GetMapping()
     public String RequestsList(Model model) {
         model.addAttribute("usersActivities", userActivityRepo
                 .findByStatusNotIn(List.of(Status.CONFIRMED, Status.DENIED)));
         return "userRequests";
     }
 
-    @PostMapping("ad")
+    @PostMapping("/ad")
     public String confirmActivity(
             @RequestParam("activityId") String activityId,
             @RequestParam("userId") String userId,
@@ -61,13 +62,13 @@ import java.util.List;
 
     public Activity increaseCounterAndSave(Activity activity) {
         activity.increaseCounter();
-        activityRepo.save(activity);
+        activityService.save(activity);
         return activity;
     }
 
     public Activity decreaseCounterAndSave(Activity activity) {
         activity.decreaseCounter();
-        activityRepo.save(activity);
+        activityService.save(activity);
         return activity;
     }
 
@@ -83,6 +84,6 @@ import java.util.List;
                 Long.valueOf(activityId)));
         userActivity.setStatus(Status.valueOf(newActivityStatus));
         userActivityRepo.save(userActivity);
-        return "greeting";
+        return ("redirect:/adminActivity/" + userId);
     }
 }

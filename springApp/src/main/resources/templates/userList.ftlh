@@ -9,10 +9,6 @@ List of users
         <tr>
         <th>Name</th>
         <th>Role</th>
-        <th><@spring.message "all.activities"/></th>
-        <th>Activity start</th>
-        <th>Activity end</th>
-        <th>Total</th>
         </tr>
     </thead>
     <tbody>
@@ -20,17 +16,7 @@ List of users
             <tr>
                 <td>${user.username}</td>
                 <td>${user.role}</td>
-                <td>
-                    <#list usersActivities as userActivity>
-                    <table>
-                      <#if userActivity.user.id == user.id>
-                            <tr>${userActivity.activity.activityname}</tr>
-                      </#if>
-                      </table>
-                    </#list>
-                </td>
-                <td></td>
-                <td></td>
+                <td><a href="/user/info/${user.id}" class="btn btn-outline-success" ><@spring.message "more"/></td>
                 <td><a href="/user/${user.id}" class="btn btn-outline-success" ><@spring.message "edit"/></a></td>
             </tr>
         </#list>

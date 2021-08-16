@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
 
@@ -18,5 +20,17 @@ public class CategoryService {
 
     public Category loadCategoryByCategoryname(String categoryname) throws UsernameNotFoundException {
         return categoryRepo.findByCategoryname(categoryname);
+    }
+
+    public List<Category> findAll() {
+        return categoryRepo.findAll();
+    }
+
+    public void save(Category category) {
+        categoryRepo.save(category);
+    }
+
+    public void delete(Category category) {
+        categoryRepo.save(category);
     }
 }
