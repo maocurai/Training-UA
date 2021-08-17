@@ -18,6 +18,8 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">
         <@spring.message "sign.in"/></button>
+        <a href="?lang=en" class="dropdown-item">EN</a>
+        <a href="?lang=ru" class="dropdown-item">UA</a>
       </form>
   </body>
 </#macro>

@@ -8,7 +8,7 @@
         name = user.getUsername()
         loggedUserId = user.getId()
         isAdmin = user.isAdmin()
-        role = user.getRole()
+        role = user.getRoleAsString()
     >
 <#else>
     <#assign

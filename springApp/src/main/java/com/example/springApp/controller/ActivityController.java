@@ -1,10 +1,7 @@
 package com.example.springApp.controller;
 
 import com.example.springApp.domain.*;
-import com.example.springApp.repos.*;
-import com.example.springApp.service.ActivityService;
-import com.example.springApp.service.CategoryService;
-import com.example.springApp.service.UserService;
+import com.example.springApp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -18,17 +15,20 @@ import java.util.Map;
 @RequestMapping("/adminActivity")
 public class ActivityController {
 
+    @Autowired
     private ActivityService activityService;
 
+    @Autowired
     private CategoryService categoryService;
 
+    @Autowired
     private UserService userService;
 
     @Autowired
-    private UserActivityRepo userActivityRepo;
+    private UserActivityService userActivityService;
 
     @Autowired
-    private UserActivityTimeRepo userActivityTimeRepo;
+    private UserActivityTimeService userActivityTimeService;
 
 
     @GetMapping("{user}")
@@ -37,7 +37,7 @@ public class ActivityController {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         model.addAttribute("activities", activityService.findAll());
-        model.addAttribute("usersActivities", userActivityRepo.findByuserId(user.getId()));
+        model.addAttribute("usersActivities", userActivityService.findByUserId(user.getId()));
         return "adminActivity";
     }
 
@@ -111,7 +111,7 @@ public class ActivityController {
                 userService.findByUserId(Long.valueOf(userId)),
                 activityService.findById(Long.valueOf(activityId)),
                 LocalDateTime.parse(activityStart), LocalDateTime.parse(activityEnd));
-        userActivityTimeRepo.save(userActivityTime);
+        userActivityTimeService.save(userActivityTime);
         return ("redirect:/adminActivity/" + userId);
     }
 

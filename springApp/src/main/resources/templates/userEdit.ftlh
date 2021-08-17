@@ -41,9 +41,9 @@ User editor
 <form action="/user" method="post">
     <h4>Add activity</h4>
     <div class="col-md-4 col-lg-4 order-md-last dropdown">
-        <#list activities as activity>
+        <#list NotUsersActivities as notUsersActivity>
             <div>
-            <label><input type="checkbox" name="${activity.activityname}"/>${activity.activityname}</label>
+            <label><input type="checkbox" name="${notUsersActivity.activityname}"/>${notUsersActivity.activityname}</label>
             </div>
         </#list>
     </div>

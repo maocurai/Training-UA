@@ -11,8 +11,7 @@ import java.util.List;
 @Service
 public class ActivityService {
 
-    @Autowired
-    private ActivityRepo activityRepo;
+    private final ActivityRepo activityRepo;
 
     public ActivityService(ActivityRepo activityRepo) {
         this.activityRepo = activityRepo;

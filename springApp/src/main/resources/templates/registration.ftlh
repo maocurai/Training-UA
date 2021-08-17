@@ -3,6 +3,5 @@
 <#import "/spring.ftl" as spring/>
 
 <@c.page>
-Add new user
 <@l.login "/registration" />
 </@c.page>

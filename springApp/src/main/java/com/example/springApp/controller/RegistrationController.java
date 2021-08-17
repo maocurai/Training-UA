@@ -2,7 +2,6 @@ package com.example.springApp.controller;
 
 import com.example.springApp.domain.Role;
 import com.example.springApp.domain.User;
-import com.example.springApp.repos.UserRepo;
 import com.example.springApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import java.util.Map;
 @Controller
 public class RegistrationController {
 
+    @Autowired
     private UserService userService;
 
     @GetMapping("/registration")

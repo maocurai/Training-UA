@@ -1,8 +1,5 @@
 package com.example.springApp.domain;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,6 +15,8 @@ public class Category {
 
     @OneToMany(mappedBy="category")
     private Set<Activity> activities;
+
+    public Category() {}
 
     public Long getId() {
         return id;

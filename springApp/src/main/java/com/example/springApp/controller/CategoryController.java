@@ -1,7 +1,6 @@
 package com.example.springApp.controller;
 
 import com.example.springApp.domain.Category;
-import com.example.springApp.repos.CategoryRepo;
 import com.example.springApp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,7 @@ import java.util.Map;
 @RequestMapping("/adminCategory")
 public class CategoryController {
 
+    @Autowired
     private CategoryService categoryService;
 
     @GetMapping()

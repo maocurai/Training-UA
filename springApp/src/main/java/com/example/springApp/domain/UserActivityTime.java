@@ -39,20 +39,20 @@ public class UserActivityTime {
         this.endTime = endTime;
     }
 
-    public AdminConfirmationKey getUserAndActivityId() {
-        return userAndActivityId;
-    }
-
-    public void setUserAndActivityId(AdminConfirmationKey userAndActivityId) {
-        this.userAndActivityId = userAndActivityId;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AdminConfirmationKey getUserAndActivityId() {
+        return userAndActivityId;
+    }
+
+    public void setUserAndActivityId(AdminConfirmationKey userAndActivityId) {
+        this.userAndActivityId = userAndActivityId;
     }
 
     public User getUser() {

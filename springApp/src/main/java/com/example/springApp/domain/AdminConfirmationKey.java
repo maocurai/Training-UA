@@ -1,8 +1,8 @@
 package com.example.springApp.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Embeddable
 public class AdminConfirmationKey implements Serializable {
@@ -17,6 +17,13 @@ public class AdminConfirmationKey implements Serializable {
         return userId;
     }
 
+    public AdminConfirmationKey() {}
+
+    public AdminConfirmationKey(Long userId, Long activityId) {
+        this.userId = userId;
+        this.activityId = activityId;
+    }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -29,24 +36,5 @@ public class AdminConfirmationKey implements Serializable {
         this.activityId = activityId;
     }
 
-    public AdminConfirmationKey() { }
 
-    public AdminConfirmationKey(Long userId, Long activityId) {
-        this.userId = userId;
-        this.activityId = activityId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AdminConfirmationKey)) return false;
-        AdminConfirmationKey that = (AdminConfirmationKey) o;
-        return Objects.equals(userId, that.userId) &&
-                Objects.equals(activityId, that.activityId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, activityId);
-    }
 }

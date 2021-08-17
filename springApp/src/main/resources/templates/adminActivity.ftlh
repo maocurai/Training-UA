@@ -9,15 +9,15 @@
         <#if !isAdmin>
             <h3><@spring.message "all.activities"/></h3>
             <table class="table table-striped mt-3">
-            <thead>
+                <thead>
                     <tr>
                         <th><@spring.message "activity.name"/></th>
                         <th>Activity start</th>
                         <th>Activity end</th>
                     </tr>
                 </thead>
-            <tbody>
-                <#list usersActivities as userActivity>
+                <tbody>
+                    <#list usersActivities as userActivity>
                     <tr>
                         <td>${userActivity.activity.activityname}</td>
                         <form action="/adminActivity/${loggedUserId}/time" method="post">
@@ -28,7 +28,7 @@
                         <#elseif userActivity.isDenied()>
                         <td colspan="2"><@spring.message "admin.denied"/></td>
                         <#else >
-                        <td colspan="2"><@spring.message "admin.processing"/></td>
+                            <td colspan="2"><@spring.message "admin.processing"/></td>
                         </#if>
                             <input type="hidden" name="activityId" value="${userActivity.activity.id}" />
                             <input type="hidden" name="userId" value="${loggedUserId}" />
@@ -49,7 +49,7 @@
 
 <#if isAdmin>
     <h3><@spring.message "all.activities"/></h3>
-    <form action="/adminActivity" id="categoryForm" method="get">
+    <form action="/adminActivity" id="categoryForm" method="post">
     <label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
 
             <select name="categoryname">
@@ -61,15 +61,14 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
     </form>
 
-<form action="/adminActivity/filter" id="filterForm" method="get">
-    <select name="filter">
-        <#list categories as category>
-            <option value="${category.id}">${category.categoryname}</option>
-        </#list>
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
-    </select>
-    <button form="filterForm">Show</button>
-</form>
+    <form action="/adminActivity/filter" id="filterForm" method="get">
+                        <select name="filter">
+                            <#list categories as category>
+                                <option value="${category.id}">${category.categoryname}</option>
+                            </#list>
+                        </select>
+                        <button form="filterForm">Show</button>
+                    </form>
 
 <form action="/adminActivity/sort" id="sortingForm" method="get">
     <table class="table table-striped mt-3">

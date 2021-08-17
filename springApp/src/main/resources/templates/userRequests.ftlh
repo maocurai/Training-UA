@@ -8,7 +8,7 @@ User requests
 
 <table class="table table-striped mt-3">
     <#list usersActivities as userActivity>
-    <form action="/ad" method="post">
+    <form action="/userRequests/ad" method="post">
           <tr>
              <td>${userActivity.user.username}</td>
              <td>${userActivity.activity.activityname}</td>

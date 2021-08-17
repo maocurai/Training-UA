@@ -4,7 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "usr")
@@ -21,6 +22,10 @@ public class User implements UserDetails {
 
     public boolean isAdmin() {
         return role.equals(Role.ADMIN);
+    }
+
+    public String getRoleAsString() {
+        return role.toString();
     }
 
     public String getRole() {
@@ -88,11 +93,4 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-//    public Set<UserActivity> getUserActivitySet() {
-//        return userActivitySet;
-//    }
-//
-//    public void setUserActivitySet(Set<UserActivity> userActivitySet) {
-//        this.userActivitySet = userActivitySet;
-//    }
 }

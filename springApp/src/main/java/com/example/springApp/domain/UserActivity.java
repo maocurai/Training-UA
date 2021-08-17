@@ -30,14 +30,6 @@ public class UserActivity {
         this.status = status;
     }
 
-    public boolean isConfirmed() {
-        return this.status.equals(Status.CONFIRMED);
-    }
-
-    public boolean isDenied() {
-        return this.status.equals(Status.DENIED);
-    }
-
     public AdminConfirmationKey getId() {
         return id;
     }

@@ -19,6 +19,13 @@ public class Activity {
 
     private Integer usersCounter = 0;
 
+    public Activity() {}
+
+    public Activity(String activityname, Category category) {
+        this.activityname = activityname;
+        this.category = category;
+    }
+
     public Long getId() {
         return id;
     }
@@ -58,4 +65,5 @@ public class Activity {
     public void decreaseCounter() {
         this.usersCounter--;
     }
+
 }

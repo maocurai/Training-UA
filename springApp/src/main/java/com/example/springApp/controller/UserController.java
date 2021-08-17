@@ -1,17 +1,18 @@
 package com.example.springApp.controller;
 
 import com.example.springApp.domain.*;
-import com.example.springApp.repos.ActivityRepo;
-import com.example.springApp.repos.UserActivityRepo;
-import com.example.springApp.repos.UserActivityTimeRepo;
-import com.example.springApp.repos.UserRepo;
 import com.example.springApp.service.ActivityService;
+import com.example.springApp.service.UserActivityService;
+import com.example.springApp.service.UserActivityTimeService;
+import com.example.springApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -20,29 +21,31 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private UserRepo userRepo;
+    private UserService userService;
 
+    @Autowired
     private ActivityService activityService;
 
     @Autowired
-    private UserActivityRepo userActivityRepo;
+    private UserActivityService userActivityService;
 
     @Autowired
-    private UserActivityTimeRepo userActivityTimeRepo;
+    private UserActivityTimeService userActivityTimeService;
 
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userRepo.findAll());
-        model.addAttribute("usersActivities", userActivityRepo.findAll());
-        model.addAttribute("usersActivitiesTime", userActivityTimeRepo.findAll());
-        return "userList";
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("usersActivities", userActivityService.findAll());
+        model.addAttribute("usersActivitiesTime", userActivityTimeService.findAll());
+        return
+         "userList";
     }
 
     @GetMapping("/info/{user}")
     public String userMore(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
-        model.addAttribute("usersActivities", userActivityRepo.findByuserId(user.getId()));
-        model.addAttribute("usersActivitiesTime", userActivityTimeRepo.findByuserId(user.getId()));
+        model.addAttribute("usersActivities", userActivityService.findByUserId(user.getId()));
+        model.addAttribute("usersActivitiesTime", userActivityTimeService.findByUserId(user.getId()));
         return "userInfo";
     }
 
@@ -52,7 +55,7 @@ public class UserController {
         model.addAttribute("roles", Role.values());
         model.addAttribute("activities", activityService.findAll());
         model.addAttribute("NotUsersActivities", activityService.findByUserIdNotUsersActivities(user.getId()));
-        model.addAttribute("usersActivities", userActivityRepo.findByuserId(user.getId()));
+        model.addAttribute("usersActivities", userActivityService.findByUserId(user.getId()));
         return "userEdit";
     }
 
@@ -63,9 +66,24 @@ public class UserController {
             @RequestParam("userId") User user,
             @RequestParam("newActivityStatus") String newActivityStatus
     ) {
-        System.out.println(username);
         user.setUsername(username);
+        user = setActivities(form, setRole(form, user), newActivityStatus);
+        userService.save(user);
+        return user.isAdmin() ? "redirect:/user" : ("redirect:/adminActivity/" + user.getId());
+    }
 
+    public User setActivities(Map<String, String> form, User user, String newActivityStatus) {
+        for (String key : form.keySet()) {
+            Activity byActivityname = activityService.findByName(key);
+            if (byActivityname != null) {
+                userActivityService.save
+                        (new UserActivity(user, byActivityname, Status.valueOf(newActivityStatus)));
+            }
+        }
+        return user;
+    }
+
+    public User setRole(Map<String, String> form, User user) {
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
                 .collect(Collectors.toSet());
@@ -74,17 +92,6 @@ public class UserController {
                 user.setRole(Role.valueOf(key));
             }
         }
-
-        for (String key : form.keySet()) {
-            Activity byActivityname = activityService.findByName(key);
-            if (byActivityname != null) {
-                byActivityname.increaseCounter();
-                activityService.save(byActivityname);
-                userActivityRepo.save
-                        (new UserActivity(user, byActivityname, Status.valueOf(newActivityStatus)));
-            }
-        }
-        userRepo.save(user);
-        return "redirect:/user";
+        return user;
     }
 }

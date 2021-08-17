@@ -4,7 +4,6 @@ import com.example.springApp.domain.Activity;
 import com.example.springApp.domain.AdminConfirmationKey;
 import com.example.springApp.domain.Status;
 import com.example.springApp.domain.UserActivity;
-import com.example.springApp.repos.ActivityRepo;
 import com.example.springApp.repos.UserActivityRepo;
 import com.example.springApp.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import java.util.List;
     @Autowired
     private UserActivityRepo userActivityRepo;
 
+    @Autowired
     private ActivityService activityService;
 
     @GetMapping()
