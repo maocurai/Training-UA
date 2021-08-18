@@ -38,4 +38,8 @@ public class UserActivityService {
     public void save(UserActivity userActivity) {
         userActivityRepo.save(userActivity);
     }
+
+    public void delete(UserActivity userActivity) {
+        userActivityRepo.delete(userActivity);
+    }
 }

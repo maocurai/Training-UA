@@ -34,7 +34,7 @@
                             <input type="hidden" name="userId" value="${loggedUserId}" />
                             <input type="hidden" name="_csrf" value="${_csrf.token}" />
                         </form>
-                   <form action="/ur" method="post">
+                   <form action="/userRequests/ur" method="post">
                            <td><button name="newActivityStatus" value="DELETE_REQUEST">Delete</button></td>
                     </tr>
                     <input type="hidden" name="activityId" value="${userActivity.activity.id}" />
@@ -73,19 +73,19 @@
 <form action="/adminActivity/sort" id="sortingForm" method="get">
     <table class="table table-striped mt-3">
         <thead>
-            <th scope="col"><button form="sortingForm" name="orderField" value="activityname"><@spring.message "activity.name"/></button></th>
+            <th scope="col"><button form="sortingForm" name="orderField" value="activityName"><@spring.message "activity.name"/></button></th>
             <th scope="col">
-                <button form="sortingForm" name="orderField" value="category.categoryname"><@spring.message "category.name"/></button>
+                <button form="sortingForm" name="orderField" value="categoryName"><@spring.message "category.name"/></button>
             </th>
-            <th scope="col"><button form="sortingForm" name="orderField" value="usersCounter">Users count</button></th>
+            <th scope="col"><button form="sortingForm" name="orderField" value="countUsers">Users count</button></th>
             <input type="hidden" name="currentOrderDirection" value="${currentOrderDirection}"/>
         </thead>
         <tbody>
             <#list activities as activity>
                 <tr>
-                    <td>${activity.activityname}</td>
-                    <td>${activity.category.categoryname}</td>
-                    <td>${activity.usersCounter}</td>
+                    <td>${activity.activityName}</td>
+                    <td>${activity.categoryName}</td>
+                    <td>${activity.countUsers}</td>
                 </tr>
             </#list>
         </tbody>

@@ -1,14 +1,17 @@
 package com.example.springApp.controller;
 
 import com.example.springApp.domain.*;
+import com.example.springApp.repos.ActivityUsersCounter;
+import com.example.springApp.repos.ActivityUsersCounterRepo;
 import com.example.springApp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -30,6 +33,9 @@ public class ActivityController {
     @Autowired
     private UserActivityTimeService userActivityTimeService;
 
+    @Autowired
+    private ActivityUsersCounterRepo activityUsersCounterRepo;
+
 
     @GetMapping("{user}")
     public String userActivityPage(@PathVariable User user,
@@ -45,16 +51,17 @@ public class ActivityController {
         return currentOrderDirection.equals("ASC") ? "DESC" : "ASC";
     }
 
-    public Sort getSorting(String orderField, String currentOrderDirection) {
-        return Sort.by(Sort.Direction.valueOf(changeSortingDirection(currentOrderDirection)), orderField);
-    }
-
     @GetMapping
     public String activityList(Model model) {
-        model.addAttribute("activities", activityService.findAll());
-        model.addAttribute("currentOrderDirection", "ASC");
+        model.addAttribute("activities", activityUsersCounterRepo.CountActivityUsersAndOrderBy("countUsers"));
+        model.addAttribute("currentOrderDirection", "DESC");
         model.addAttribute("categories", categoryService.findAll());
         return "adminActivity";
+    }
+
+    public List<ActivityUsersCounter> setOrderDirection(List<ActivityUsersCounter> list, String orderDirection) {
+        if (!orderDirection.equals("ASC")) Collections.reverse(list);
+        return list;
     }
 
     @GetMapping("/sort")
@@ -62,7 +69,9 @@ public class ActivityController {
                                @RequestParam(required = false) String orderField,
                                @RequestParam(required = false) String currentOrderDirection
     ) {
-        model.addAttribute("activities", activityService.findAllAndSort(getSorting(orderField, currentOrderDirection)));
+        List<ActivityUsersCounter> usersCounter = activityUsersCounterRepo.CountActivityUsersAndOrderBy(orderField);
+        usersCounter = setOrderDirection(usersCounter, currentOrderDirection);
+        model.addAttribute("activities", usersCounter);
         model.addAttribute("currentOrderDirection", changeSortingDirection(currentOrderDirection));
         model.addAttribute("categories", categoryService.findAll());
         return "adminActivity";
@@ -73,7 +82,6 @@ public class ActivityController {
                                @RequestParam(required = false) String filter
 
     ) {
-        System.out.println(filter);
         model.addAttribute("currentOrderDirection", "ASC");
         model.addAttribute("activities", activityService.findByCategoryId(Long.valueOf(filter)));
         model.addAttribute("categories", categoryService.findAll());

@@ -6,6 +6,7 @@ import com.example.springApp.domain.Status;
 import com.example.springApp.domain.UserActivity;
 import com.example.springApp.repos.UserActivityRepo;
 import com.example.springApp.service.ActivityService;
+import com.example.springApp.service.UserActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,14 +22,14 @@ import java.util.List;
     public class RequestController {
 
     @Autowired
-    private UserActivityRepo userActivityRepo;
+    private UserActivityService userActivityService;
 
     @Autowired
     private ActivityService activityService;
 
     @GetMapping()
     public String RequestsList(Model model) {
-        model.addAttribute("usersActivities", userActivityRepo
+        model.addAttribute("usersActivities", userActivityService
                 .findByStatusNotIn(List.of(Status.CONFIRMED, Status.DENIED)));
         return "userRequests";
     }
@@ -39,7 +40,7 @@ import java.util.List;
             @RequestParam("userId") String userId,
             @RequestParam("newActivityStatus") String newActivityStatus
     ) {
-        UserActivity userActivity = userActivityRepo.findByid(new AdminConfirmationKey(
+        UserActivity userActivity = userActivityService.findById(new AdminConfirmationKey(
                 Long.valueOf(userId),
                 Long.valueOf(activityId)));
         Status oldStatus = userActivity.getStatus();
@@ -50,28 +51,10 @@ import java.util.List;
 
     public void doActionDueToStatus(UserActivity userActivity, Status status) {
         switch (status) {
-            case ADD_REQUEST:
-                userActivity.setActivity(increaseCounterAndSave(userActivity.getActivity()));
-                userActivityRepo.save(userActivity);
-            break;
-            case DELETE_REQUEST:
-                userActivity.setActivity(decreaseCounterAndSave(userActivity.getActivity()));
-                userActivityRepo.delete(userActivity);
+            case ADD_REQUEST: userActivityService.save(userActivity); break;
+            case DELETE_REQUEST: userActivityService.delete(userActivity);
         }
     }
-
-    public Activity increaseCounterAndSave(Activity activity) {
-        activity.increaseCounter();
-        activityService.save(activity);
-        return activity;
-    }
-
-    public Activity decreaseCounterAndSave(Activity activity) {
-        activity.decreaseCounter();
-        activityService.save(activity);
-        return activity;
-    }
-
 
     @PostMapping("/ur")
     public String userRequest(
@@ -79,11 +62,11 @@ import java.util.List;
             @RequestParam("userId") String userId,
             @RequestParam("newActivityStatus") String newActivityStatus
     ) {
-        UserActivity userActivity = userActivityRepo.findByid(new AdminConfirmationKey(
+        UserActivity userActivity = userActivityService.findById(new AdminConfirmationKey(
                 Long.valueOf(userId),
                 Long.valueOf(activityId)));
         userActivity.setStatus(Status.valueOf(newActivityStatus));
-        userActivityRepo.save(userActivity);
+        userActivityService.save(userActivity);
         return ("redirect:/adminActivity/" + userId);
     }
 }

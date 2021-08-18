@@ -10,7 +10,7 @@
       <form action="${path}" method="post" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal mt-5"><@spring.message "authorise"/></h1>
         <div style="display: flex; flex-direction: column; align-items: center;">
-        <label for="inputEmail" class="sr-only"><@spring.message "nickname"/></label>
+        <label for="inputEmail" class="sr-only"><@spring.message "login"/></label>
             <input type="text" name="username" class="form-control mt-1" placeholder="Email address" style="width: 30%;">
             <label for="inputPassword" class="sr-only mt-2"><@spring.message "password"/></label>
             <input type="password" name="password" class="form-control mt-1" placeholder="Password" style="width: 30%;">

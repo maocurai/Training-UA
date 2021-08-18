@@ -17,8 +17,6 @@ public class Activity {
     @JoinColumn(name="category_id", nullable=false)
     private Category category;
 
-    private Integer usersCounter = 0;
-
     public Activity() {}
 
     public Activity(String activityname, Category category) {
@@ -49,21 +47,4 @@ public class Activity {
     public void setCategory(Category category) {
         this.category = category;
     }
-
-    public Integer getUsersCounter() {
-        return usersCounter;
-    }
-
-    public void setUsersCounter(Integer usersCounter) {
-        this.usersCounter = usersCounter;
-    }
-
-    public void increaseCounter() {
-        this.usersCounter++;
-    }
-
-    public void decreaseCounter() {
-        this.usersCounter--;
-    }
-
 }

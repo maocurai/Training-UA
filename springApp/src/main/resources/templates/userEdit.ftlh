@@ -15,13 +15,11 @@ User editor
         </#list>
         <h4>User's activities</h4>
         <table>
-            <tbody>
-                <#list usersActivities as userActivity>
-                    <#if userActivity.user.id == userToEdit.id>
-                      ${userActivity.activity.activityname}
-                    </#if>
-               </#list>
-            </tbody>
+            <tr>
+               <#list usersActivities as userActivity>
+                  <p>${userActivity.activity.activityname}</p>
+              </#list>
+            </tr>
         </table>
 
             <h4>Add activity</h4>
@@ -33,6 +31,7 @@ User editor
                 </#list>
             </div>
             <input type="hidden" value="${userToEdit.id}" name="userId">
+            <input type="hidden" value="${loggedUserId}" name="loggedUserId">
             <input type="hidden" value="${_csrf.token}" name="_csrf">
             <button type="submit" name="newActivityStatus" value="CONFIRMED">Save</button>
     </form>
@@ -48,6 +47,7 @@ User editor
         </#list>
     </div>
     <input type="hidden" value="${userToEdit.id}" name="userId">
+    <input type="hidden" value="${loggedUserId}" name="loggedUserId">
     <input type="hidden" name="username" value="${userToEdit.username}">
     <input type="hidden" value="${_csrf.token}" name="_csrf">
     <button type="submit" name="newActivityStatus" value="ADD_REQUEST">Save</button>

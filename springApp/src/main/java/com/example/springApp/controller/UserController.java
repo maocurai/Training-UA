@@ -64,12 +64,14 @@ public class UserController {
             @RequestParam String username,
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user,
+            @RequestParam("loggedUserId") String loggedUserId,
             @RequestParam("newActivityStatus") String newActivityStatus
     ) {
         user.setUsername(username);
         user = setActivities(form, setRole(form, user), newActivityStatus);
         userService.save(user);
-        return user.isAdmin() ? "redirect:/user" : ("redirect:/adminActivity/" + user.getId());
+        User currentUser = userService.findByUserId(Long.valueOf(loggedUserId));
+        return currentUser.isAdmin() ? "redirect:/user" : ("redirect:/adminActivity/" + user.getId());
     }
 
     public User setActivities(Map<String, String> form, User user, String newActivityStatus) {
