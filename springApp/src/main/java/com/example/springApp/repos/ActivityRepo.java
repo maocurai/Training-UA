@@ -14,8 +14,8 @@ public interface ActivityRepo extends JpaRepository<Activity, Long> {
     List<Activity> findByCategoryId(Long id);
 
     @Query(
-            value = "SELECT a.id, a.activityname, a.category_id, a.users_counter FROM actvt a LEFT JOIN user_activity ua on a.id = ua.activity_id\n" +
-                    "WHERE ua.user_id != ?1 OR (ua.user_id IS Null)\n" +
+            value = "SELECT a.id, a.activityname, a.category_id FROM actvt a LEFT JOIN user_activity ua on a.id = ua.activity_id\n" +
+                    "WHERE ua.user_id != ?1 OR (ua.user_id IS NULL)\n" +
                     "group by a.id",
             nativeQuery = true
     )

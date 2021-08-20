@@ -22,14 +22,14 @@
         </a>
       </li>
       <li>
-         <a href="/adminCategory" class="nav-link link-dark">
+         <a href="/category" class="nav-link link-dark">
              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
              <@spring.message "admin.activity.category"/>
          </a>
       </li>
 
       <li>
-          <a href="/adminActivity" class="nav-link link-dark">
+          <a href="/activity" class="nav-link link-dark">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
           <@spring.message "all.activities"/>
            </a>
@@ -38,7 +38,7 @@
 
     <#if !isAdmin>
       <li>
-        <a href="/adminActivity/${loggedUserId}" class="nav-link link-dark">
+        <a href="/activity/${loggedUserId}" class="nav-link link-dark">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
           <@spring.message "all.activities"/>
         </a>

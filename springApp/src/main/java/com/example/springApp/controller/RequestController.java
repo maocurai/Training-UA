@@ -1,11 +1,8 @@
 package com.example.springApp.controller;
 
-import com.example.springApp.domain.Activity;
 import com.example.springApp.domain.AdminConfirmationKey;
 import com.example.springApp.domain.Status;
 import com.example.springApp.domain.UserActivity;
-import com.example.springApp.repos.UserActivityRepo;
-import com.example.springApp.service.ActivityService;
 import com.example.springApp.service.UserActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,8 +21,6 @@ import java.util.List;
     @Autowired
     private UserActivityService userActivityService;
 
-    @Autowired
-    private ActivityService activityService;
 
     @GetMapping()
     public String RequestsList(Model model) {
@@ -45,18 +40,11 @@ import java.util.List;
                 Long.valueOf(activityId)));
         Status oldStatus = userActivity.getStatus();
         userActivity.setStatus(Status.valueOf(newActivityStatus));
-        doActionDueToStatus(userActivity, oldStatus);
+        userActivityService.doActionDueToStatus(userActivity, oldStatus);
         return "redirect:/userRequests";
     }
 
-    public void doActionDueToStatus(UserActivity userActivity, Status status) {
-        switch (status) {
-            case ADD_REQUEST: userActivityService.save(userActivity); break;
-            case DELETE_REQUEST: userActivityService.delete(userActivity);
-        }
-    }
-
-    @PostMapping("/ur")
+    @PostMapping("/addActivity")
     public String userRequest(
             @RequestParam("activityId") String activityId,
             @RequestParam("userId") String userId,
@@ -67,6 +55,6 @@ import java.util.List;
                 Long.valueOf(activityId)));
         userActivity.setStatus(Status.valueOf(newActivityStatus));
         userActivityService.save(userActivity);
-        return ("redirect:/adminActivity/" + userId);
+        return ("redirect:/activity/" + userId);
     }
 }

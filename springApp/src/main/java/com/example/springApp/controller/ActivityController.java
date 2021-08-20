@@ -2,7 +2,6 @@ package com.example.springApp.controller;
 
 import com.example.springApp.domain.*;
 import com.example.springApp.repos.ActivityUsersCounter;
-import com.example.springApp.repos.ActivityUsersCounterRepo;
 import com.example.springApp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,12 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/adminActivity")
+@RequestMapping("/activity")
 public class ActivityController {
 
     @Autowired
@@ -34,7 +32,7 @@ public class ActivityController {
     private UserActivityTimeService userActivityTimeService;
 
     @Autowired
-    private ActivityUsersCounterRepo activityUsersCounterRepo;
+    private ActivityUsersCounterService activityUsersCounterService;
 
 
     @GetMapping("{user}")
@@ -44,24 +42,15 @@ public class ActivityController {
         model.addAttribute("roles", Role.values());
         model.addAttribute("activities", activityService.findAll());
         model.addAttribute("usersActivities", userActivityService.findByUserId(user.getId()));
-        return "adminActivity";
-    }
-
-    public String changeSortingDirection(String currentOrderDirection) {
-        return currentOrderDirection.equals("ASC") ? "DESC" : "ASC";
+        return "activity";
     }
 
     @GetMapping
     public String activityList(Model model) {
-        model.addAttribute("activities", activityUsersCounterRepo.CountActivityUsersAndOrderBy("countUsers"));
+        model.addAttribute("activities", activityUsersCounterService.countActivityUsersAndOrderBy("countUsers"));
         model.addAttribute("currentOrderDirection", "DESC");
         model.addAttribute("categories", categoryService.findAll());
-        return "adminActivity";
-    }
-
-    public List<ActivityUsersCounter> setOrderDirection(List<ActivityUsersCounter> list, String orderDirection) {
-        if (!orderDirection.equals("ASC")) Collections.reverse(list);
-        return list;
+        return "activity";
     }
 
     @GetMapping("/sort")
@@ -69,12 +58,12 @@ public class ActivityController {
                                @RequestParam(required = false) String orderField,
                                @RequestParam(required = false) String currentOrderDirection
     ) {
-        List<ActivityUsersCounter> usersCounter = activityUsersCounterRepo.CountActivityUsersAndOrderBy(orderField);
-        usersCounter = setOrderDirection(usersCounter, currentOrderDirection);
+        List<ActivityUsersCounter> usersCounter = activityUsersCounterService.countActivityUsersAndOrderBy(orderField);
+        usersCounter = activityUsersCounterService.setOrderDirection(usersCounter, currentOrderDirection);
         model.addAttribute("activities", usersCounter);
-        model.addAttribute("currentOrderDirection", changeSortingDirection(currentOrderDirection));
+        model.addAttribute("currentOrderDirection", activityUsersCounterService.changeSortingDirection(currentOrderDirection));
         model.addAttribute("categories", categoryService.findAll());
-        return "adminActivity";
+        return "activity";
     }
 
     @GetMapping("/filter")
@@ -83,9 +72,9 @@ public class ActivityController {
 
     ) {
         model.addAttribute("currentOrderDirection", "ASC");
-        model.addAttribute("activities", activityService.findByCategoryId(Long.valueOf(filter)));
+        model.addAttribute("activities", activityUsersCounterService.countActivityUsersByCategoryId(Long.valueOf(filter)));
         model.addAttribute("categories", categoryService.findAll());
-        return "adminActivity";
+        return "activity";
     }
 
     @PostMapping
@@ -104,7 +93,7 @@ public class ActivityController {
         } catch (Exception ex) {
             model.put("addCategoryResult", "Activity not added");
         }
-        return "redirect:/adminActivity";
+        return "redirect:/activity";
     }
 
     @PostMapping("{id}/time")
@@ -120,7 +109,7 @@ public class ActivityController {
                 activityService.findById(Long.valueOf(activityId)),
                 LocalDateTime.parse(activityStart), LocalDateTime.parse(activityEnd));
         userActivityTimeService.save(userActivityTime);
-        return ("redirect:/adminActivity/" + userId);
+        return ("redirect:/activity/" + userId);
     }
 
 }

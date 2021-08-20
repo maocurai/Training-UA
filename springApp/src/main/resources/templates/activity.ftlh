@@ -20,7 +20,7 @@
                     <#list usersActivities as userActivity>
                     <tr>
                         <td>${userActivity.activity.activityname}</td>
-                        <form action="/adminActivity/${loggedUserId}/time" method="post">
+                        <form action="/activity/${loggedUserId}/time" method="post">
                         <#if userActivity.isConfirmed()>
                             <td><input type="datetime-local" name="activity-start"></td>
                             <td><input type="datetime-local" name="activity-end"></td>
@@ -34,7 +34,7 @@
                             <input type="hidden" name="userId" value="${loggedUserId}" />
                             <input type="hidden" name="_csrf" value="${_csrf.token}" />
                         </form>
-                   <form action="/userRequests/ur" method="post">
+                   <form action="/userRequests/addActivity" method="post">
                            <td><button name="newActivityStatus" value="DELETE_REQUEST">Delete</button></td>
                     </tr>
                     <input type="hidden" name="activityId" value="${userActivity.activity.id}" />
@@ -49,7 +49,7 @@
 
 <#if isAdmin>
     <h3><@spring.message "all.activities"/></h3>
-    <form action="/adminActivity" id="categoryForm" method="post">
+    <form action="/activity" id="categoryForm" method="post">
     <label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
 
             <select name="categoryname">
@@ -61,23 +61,24 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
     </form>
 
-    <form action="/adminActivity/filter" id="filterForm" method="get">
+    <form action="/activity/filter" id="filterForm" method="get">
+    <label><@spring.message "filter.by"/></label>
                         <select name="filter">
                             <#list categories as category>
                                 <option value="${category.id}">${category.categoryname}</option>
                             </#list>
                         </select>
-                        <button form="filterForm">Show</button>
+                        <button class="btn btn-outline-danger" form="filterForm"><@spring.message "on"/></button>
+                        <a href="/activity" class="btn btn-outline-danger" ><@spring.message "off"/></a>
                     </form>
-
-<form action="/adminActivity/sort" id="sortingForm" method="get">
+<form action="/activity/sort" id="sortingForm" method="get">
     <table class="table table-striped mt-3">
         <thead>
             <th scope="col"><button form="sortingForm" name="orderField" value="activityName"><@spring.message "activity.name"/></button></th>
             <th scope="col">
                 <button form="sortingForm" name="orderField" value="categoryName"><@spring.message "category.name"/></button>
             </th>
-            <th scope="col"><button form="sortingForm" name="orderField" value="countUsers">Users count</button></th>
+            <th scope="col"><button form="sortingForm" name="orderField" value="countUsers"><@spring.message "users.count"/></button></th>
             <input type="hidden" name="currentOrderDirection" value="${currentOrderDirection}"/>
         </thead>
         <tbody>

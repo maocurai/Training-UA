@@ -4,7 +4,7 @@
 
 <@c.page>
 <h1 class="mt-5"><@spring.message "category.control"/></h1>
-<form action="/adminCategory/add" method="post">
+<form action="/category/add" method="post">
 <div class="row g-5 mt-3">
     <div class="col-md-6 col-lg-6 order-md-last">
         <label><@spring.message "category.name"/><input type="text" name="categoryname"/> </label>
@@ -23,10 +23,10 @@
     </thead>
     <tbody>
         <#list categories as category>
-        <form action="/adminCategory/delete" method="post">
+        <form action="/category/delete" method="post">
             <tr>
                 <td>${category.categoryname}</td>
-                <td><a href="/adminCategory/${category.id}" class="btn btn-outline-success"><@spring.message "edit"/></a></td>
+                <td><a href="/category/${category.id}" class="btn btn-outline-success"><@spring.message "edit"/></a></td>
                 <td><button class="btn btn-outline-danger"><@spring.message "delete"/></button><td>
                 <input type="hidden" name="categoryname" value="${category.categoryname}"/>
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />

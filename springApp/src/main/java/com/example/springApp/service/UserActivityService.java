@@ -1,6 +1,7 @@
 package com.example.springApp.service;
 
 import com.example.springApp.domain.AdminConfirmationKey;
+import com.example.springApp.domain.Status;
 import com.example.springApp.domain.User;
 import com.example.springApp.domain.UserActivity;
 import com.example.springApp.repos.UserActivityRepo;
@@ -41,5 +42,12 @@ public class UserActivityService {
 
     public void delete(UserActivity userActivity) {
         userActivityRepo.delete(userActivity);
+    }
+
+    public void doActionDueToStatus(UserActivity userActivity, Status status) {
+        switch (status) {
+            case ADD_REQUEST: userActivityRepo.save(userActivity); break;
+            case DELETE_REQUEST: userActivityRepo.delete(userActivity);
+        }
     }
 }

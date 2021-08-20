@@ -6,7 +6,7 @@
 Category editor
 
 <h1 class="mt-5"><@spring.message "category.control"/></h1>
-<form action="/adminCategory/edit" method="post">
+<form action="/category/edit" method="post">
 <div class="row g-5 mt-3">
     <div class="col-md-6 col-lg-6 order-md-last">
         <label><@spring.message "category.name"/><input type="text" name="categoryname"/> </label>

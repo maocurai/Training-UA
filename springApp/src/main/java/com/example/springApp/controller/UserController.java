@@ -68,10 +68,11 @@ public class UserController {
             @RequestParam("newActivityStatus") String newActivityStatus
     ) {
         user.setUsername(username);
-        user = setActivities(form, setRole(form, user), newActivityStatus);
+        user = userService.setRole(form, user);
+        user = setActivities(form, user, newActivityStatus);
         userService.save(user);
         User currentUser = userService.findByUserId(Long.valueOf(loggedUserId));
-        return currentUser.isAdmin() ? "redirect:/user" : ("redirect:/adminActivity/" + user.getId());
+        return currentUser.isAdmin() ? ("redirect:/user/info/" + user.getId()) : ("redirect:/activity/" + user.getId());
     }
 
     public User setActivities(Map<String, String> form, User user, String newActivityStatus) {
@@ -80,18 +81,6 @@ public class UserController {
             if (byActivityname != null) {
                 userActivityService.save
                         (new UserActivity(user, byActivityname, Status.valueOf(newActivityStatus)));
-            }
-        }
-        return user;
-    }
-
-    public User setRole(Map<String, String> form, User user) {
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.setRole(Role.valueOf(key));
             }
         }
         return user;

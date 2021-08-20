@@ -25,5 +25,21 @@ public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> 
                             "WHEN :sortField = 'categoryName' THEN categoryName\n" +
                             "WHEN :sortField = 'countUsers' THEN COUNT(ua.activity_id) END",
             nativeQuery = true)
-    List<ActivityUsersCounter> CountActivityUsersAndOrderBy(@Param("sortField")String sortField);
+    List<ActivityUsersCounter> countActivityUsersAndOrderBy(@Param("sortField")String sortField);
+
+    @Query( value = "SELECT " +
+            "a.id AS activityId,\n" +
+            "\t     a.activityname AS activityName,\n" +
+            "       c.categoryname AS categoryName,\n" +
+            "       COUNT(ua.activity_id) as countUsers\n" +
+            "FROM actvt AS a\n" +
+            "LEFT JOIN user_activity AS ua ON ua.activity_id = a.id\n" +
+            "INNER JOIN ctgr AS c ON c.id = a.category_id\n" +
+            "WHERE c.id = :categoryId\n" +
+            "GROUP BY a.id  \n" +
+            "ORDER BY categoryName ASC",
+            nativeQuery = true)
+    List<ActivityUsersCounter> countActivityUsersByCategoryId(@Param("categoryId")Long categoryId);
+
+
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Controller
 
-@RequestMapping("/adminCategory")
+@RequestMapping("/category")
 public class CategoryController {
 
     @Autowired
@@ -20,7 +20,7 @@ public class CategoryController {
     @GetMapping()
     public String categoryList(Model model) {
         model.addAttribute("categories", categoryService.findAll());
-        return "adminCategory";
+        return "category";
     }
 
     @GetMapping("/{category}")
@@ -35,7 +35,7 @@ public class CategoryController {
                                @RequestParam("categoryId") Category category) {
         category.setCategoryname(categoryname);
         addCategory(model, category);
-        return "redirect:/adminCategory";
+        return "redirect:/category";
     }
 
     @PostMapping("/add")
@@ -47,18 +47,13 @@ public class CategoryController {
         } catch (Exception ex) {
             model.put("addCategoryResult", "Category already exists");
         }
-        return "redirect:/adminCategory";
+        return "redirect:/category";
     }
 
     @PostMapping("/delete")
     public String deleteCategory(Map<String, Object> model,
                               Category category) {
-        try {
-            categoryService.delete(categoryService.loadCategoryByCategoryname(category.getCategoryname()));
-            model.put("addCategoryResult", "Category successfully added");
-        } catch (Exception ex) {
-            model.put("addCategoryResult", "Category already exists");
-        }
-        return "redirect:/adminCategory";
+        categoryService.delete(categoryService.loadCategoryByCategoryname(category.getCategoryname()));
+        return "redirect:/category";
     }
 }

@@ -17,7 +17,7 @@ public class CategoryService {
         this.categoryRepo = categoryRepo;
     }
 
-    public Category loadCategoryByCategoryname(String categoryname) throws UsernameNotFoundException {
+    public Category loadCategoryByCategoryname(String categoryname) {
         return categoryRepo.findByCategoryname(categoryname);
     }
 

@@ -1,5 +1,8 @@
 package com.example.springApp.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,6 +17,7 @@ public class Category {
     private String categoryname;
 
     @OneToMany(mappedBy="category")
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Set<Activity> activities;
 
     public Category() {}

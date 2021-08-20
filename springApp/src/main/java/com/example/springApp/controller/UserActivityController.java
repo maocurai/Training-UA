@@ -24,10 +24,6 @@ public class UserActivityController {
         model.addAttribute("roles", Role.values());
         model.addAttribute("activities", activityService.findAll());
         model.addAttribute("usersActivities", userActivityService.findByUserId(user.getId()));
-        return "adminActivity";
+        return "activity";
     }
-
-
-
-
 }
