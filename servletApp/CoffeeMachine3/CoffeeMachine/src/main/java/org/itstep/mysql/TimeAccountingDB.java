@@ -30,4 +30,8 @@ public class TimeAccountingDB {
     public static ResultSet getResultSet(String query) throws SQLException {
         return connection.createStatement().executeQuery(query);
     }
+
+    public static ResultSet getResultSet(PreparedStatement preparedStatement) throws SQLException {
+        return preparedStatement.executeQuery();
+    }
 }

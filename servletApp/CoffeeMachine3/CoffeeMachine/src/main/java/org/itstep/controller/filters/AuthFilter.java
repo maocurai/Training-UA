@@ -1,6 +1,7 @@
 package org.itstep.controller.filters;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,21 +14,19 @@ public class AuthFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request,
-                         ServletResponse response,
-                         FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest,
+                         ServletResponse servletResponse,
+                         FilterChain chain) throws IOException, ServletException {
 
-        final HttpServletRequest req = (HttpServletRequest) request;
-        final HttpServletResponse res = (HttpServletResponse) response;
+        final HttpServletRequest request = (HttpServletRequest)servletRequest;
+        final HttpServletResponse response = (HttpServletResponse)servletResponse;
 
-        HttpSession session = req.getSession();
-        ServletContext context = request.getServletContext();
-        System.out.println(session);
-        System.out.println(session.getAttribute("role"));
-        System.out.println(context.getAttribute("loggedUsers"));
-
-
-        filterChain.doFilter(request,response);
+        HttpSession session = request.getSession(false);
+        if(session == null || session.getAttribute("loggedUserId") == null) {
+            servletRequest.getServletContext().getRequestDispatcher("/login").forward(servletRequest, servletResponse);
+        } else {
+            chain.doFilter(servletRequest, servletResponse);
+        }
     }
 
     @Override

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet(name = "RegistrationServlet", value = "/registration")
 public class RegistrationServlet extends HttpServlet {
@@ -29,16 +28,7 @@ public class RegistrationServlet extends HttpServlet {
         user.setPassword(request.getParameter("pass"));
         user.setRole(Role.USER);
         user.setUsername(request.getParameter("name"));
-
-        String message = "User added!";
-        try {
-            userDao.addUser(user);
-        } catch (SQLException | ClassNotFoundException throwables) {
-            message = "User not added";
-            request.setAttribute("message", message);
-            throwables.printStackTrace();
-        }
-        System.out.println(message);
+        userDao.save(user);
         request.getRequestDispatcher("/registration.jsp").forward(request, response);
     }
 }
