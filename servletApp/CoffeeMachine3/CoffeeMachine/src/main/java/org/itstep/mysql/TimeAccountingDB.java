@@ -1,22 +1,31 @@
 package org.itstep.mysql;
 
+import javax.servlet.ServletContext;
+import javax.ws.rs.core.Context;
 import java.sql.*;
+
 
 public class TimeAccountingDB {
 
     private static Connection connection = null;
 
+    @Context
+    static
+    ServletContext servletContext;
+
     static
     {
-        String url = "jdbc:mysql://localhost:3306/springapp_bd?useSSL=false";
-        String user = "root";
-        String pass = "";
         try {
+            String url = "jdbc:mysql://localhost:3306/timeaccounting?useSSL=false";
+            String user = "root";
+            String pass = "";
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, pass);
         }
-        catch (ClassNotFoundException | SQLException e) {
+        catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
     public static Connection getConnection() {

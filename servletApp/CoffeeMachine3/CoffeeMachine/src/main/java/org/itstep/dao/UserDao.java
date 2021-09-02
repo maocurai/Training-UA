@@ -55,16 +55,14 @@ public class UserDao implements CrudDao<User> {
 
     @Override
     public void save(User user) {
-        String INSERT_USERS_SQL = "INSERT INTO `usr` (`id`, `active`, `password`, `role`, `username`) VALUES (?, ?, ?, ?, ?);";
+        String INSERT_USERS_SQL = "INSERT INTO `users`(`username`, `password`, `isActive`) VALUES (?, ?, ?, ?)";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = TimeAccountingDB.prepareStatement(INSERT_USERS_SQL);
-
-        preparedStatement.setInt(1, 1);
-        preparedStatement.setBoolean(2, user.isActive());
-        preparedStatement.setString(3, user.getPassword());
-        preparedStatement.setString(4, user.getRole());
-        preparedStatement.setString(5, user.getUsername());
+        preparedStatement.setBoolean(1, user.isActive());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getRole());
+        preparedStatement.setString(4, user.getUsername());
         preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

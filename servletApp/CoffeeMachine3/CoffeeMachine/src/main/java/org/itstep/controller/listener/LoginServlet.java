@@ -2,7 +2,6 @@ package org.itstep.controller.listener;
 
 import org.itstep.dao.UserDao;
 import org.itstep.exceptions.NoSuchUserException;
-import org.itstep.model.entity.Role;
 import org.itstep.model.entity.User;
 
 import javax.servlet.ServletException;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class LoginServlet extends HttpServlet  {
 
@@ -33,7 +31,7 @@ public class LoginServlet extends HttpServlet  {
             session.setAttribute("loggedUserRole", user.getRole());
             session.setAttribute("isAdmin", user.isAdmin());
             session.setAttribute("loggedUserIsActive", user.isActive());
-            response.sendRedirect(request.getContextPath() + "/users");
+            response.sendRedirect(request.getContextPath() + "/");
         } catch (NoSuchUserException e) {
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/login");
