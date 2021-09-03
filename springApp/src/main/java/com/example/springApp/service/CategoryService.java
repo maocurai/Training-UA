@@ -30,6 +30,6 @@ public class CategoryService {
     }
 
     public void delete(Category category) {
-        categoryRepo.save(category);
+        categoryRepo.delete(category);
     }
 }
