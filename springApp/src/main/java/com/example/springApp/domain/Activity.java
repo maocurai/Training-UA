@@ -17,7 +17,7 @@ public class Activity {
     private String activityname;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="category_id", nullable=false)
+    @JoinColumn(name="category_id", nullable=true)
     private Category category;
 
     public Activity() {}

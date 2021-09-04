@@ -21,8 +21,10 @@ public class ActivityUsersCounterService {
         return activityUsersCounterRepo.countActivityUsersAndOrderBy(sortField);
     }
 
-    public List<ActivityUsersCounter> countActivityUsersByCategoryId(Long categoryId) {
-        return activityUsersCounterRepo.countActivityUsersByCategoryId(categoryId);
+    public List<ActivityUsersCounter> countActivityUsersByCategoryName(String categoryName) {
+        return (categoryName.equals("NULL")) ?
+                activityUsersCounterRepo.countActivityUsersWhereCategoryIsNull() :
+                activityUsersCounterRepo.countActivityUsersByCategoryName(categoryName);
     }
 
     public String changeSortingDirection(String currentOrderDirection) {

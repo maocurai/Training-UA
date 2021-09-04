@@ -65,8 +65,9 @@
     <label><@spring.message "filter.by"/></label>
                         <select name="filter">
                             <#list categories as category>
-                                <option value="${category.id}">${category.categoryname}</option>
+                                <option value="${category.categoryname}">${category.categoryname}</option>
                             </#list>
+                            <option value="NULL">No category</option>
                         </select>
                         <button class="btn btn-outline-danger" form="filterForm"><@spring.message "on"/></button>
                         <a href="/activity" class="btn btn-outline-danger" ><@spring.message "off"/></a>
@@ -85,7 +86,13 @@
             <#list activities as activity>
                 <tr>
                     <td>${activity.activityName}</td>
-                    <td>${activity.categoryName}</td>
+                    <td>
+                        <#if (activity.categoryName)??>
+                            ${activity.categoryName}
+                        <#else>
+                            No category
+                        </#if>
+                    </td>
                     <td>${activity.countUsers}</td>
                 </tr>
             </#list>
