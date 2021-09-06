@@ -4,6 +4,9 @@ import com.example.springApp.domain.*;
 import com.example.springApp.repos.ActivityUsersCounter;
 import com.example.springApp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +49,12 @@ public class ActivityController {
     }
 
     @GetMapping
-    public String activityList(Model model) {
-        model.addAttribute("activities", activityUsersCounterService.countActivityUsersAndOrderBy("countUsers"));
+    public String activityList(Model model,
+                               @PageableDefault(sort = { "categoryName" }, direction = Sort.Direction.DESC)
+                                       Pageable pageable) {
+        model.addAttribute("activities", activityUsersCounterService.countActivityUsersAndOrderBy("countUsers", pageable));
         model.addAttribute("currentOrderDirection", "DESC");
+        model.addAttribute("url", "/activity");
         model.addAttribute("categories", categoryService.findAll());
         return "activity";
     }
@@ -58,9 +64,9 @@ public class ActivityController {
                                @RequestParam(required = false) String orderField,
                                @RequestParam(required = false) String currentOrderDirection
     ) {
-        List<ActivityUsersCounter> usersCounter = activityUsersCounterService.countActivityUsersAndOrderBy(orderField);
-        usersCounter = activityUsersCounterService.setOrderDirection(usersCounter, currentOrderDirection);
-        model.addAttribute("activities", usersCounter);
+//        List<ActivityUsersCounter> usersCounter = activityUsersCounterService.countActivityUsersAndOrderBy(orderField);
+//        usersCounter = activityUsersCounterService.setOrderDirection(usersCounter, currentOrderDirection);
+//        model.addAttribute("activities", usersCounter);
         model.addAttribute("currentOrderDirection", activityUsersCounterService.changeSortingDirection(currentOrderDirection));
         model.addAttribute("categories", categoryService.findAll());
         return "activity";
@@ -72,7 +78,7 @@ public class ActivityController {
 
     ) {
         model.addAttribute("currentOrderDirection", "ASC");
-        model.addAttribute("activities", activityUsersCounterService.countActivityUsersByCategoryName(filter));
+//        model.addAttribute("activities", activityUsersCounterService.countActivityUsersByCategoryName(filter));
         model.addAttribute("categories", categoryService.findAll());
         return "activity";
     }

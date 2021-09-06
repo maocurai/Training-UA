@@ -1,6 +1,8 @@
 package com.example.springApp.repos;
 
 import com.example.springApp.domain.Activity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,49 +14,74 @@ import java.util.List;
 @Repository
 public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> {
 
-    @Query( value = "SELECT " +
+    String query = "SELECT \n" +
             "a.id AS activityId,\n" +
-            "\t     a.activityname AS activityName,\n" +
-            "       c.categoryname AS categoryName,\n" +
-            "       COUNT(ua.activity_id) as countUsers\n" +
+            "a.activityname AS activityName,\n" +
+            "c.categoryname AS categoryName,\n" +
+            "COUNT(ca.activity_id) as countUsers\n" +
             "FROM actvt AS a\n" +
-            "LEFT JOIN user_activity AS ua ON ua.activity_id = a.id\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT activity_id\n" +
+            "    FROM user_activity AS ua\n" +
+            "    WHERE ua.status = \"CONFIRMED\"\n" +
+            ") AS ca ON ca.activity_id = a.id\n" +
             "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
-//            "WHERE ua.status = 'CONFIRMED' OR ua.activity_id IS NULL\n" +
-            "WHERE ua.status = 'CONFIRMED' OR ua.user_id IS NULL\n" +
-            "GROUP BY a.id  \n" +
-            "ORDER BY " +
-                        "CASE WHEN :sortField = 'activityName' THEN activityName\n" +
-                            "WHEN :sortField = 'categoryName' THEN categoryName\n" +
-                            "WHEN :sortField = 'countUsers' THEN COUNT(ua.activity_id) END",
-            nativeQuery = true)
-    List<ActivityUsersCounter> countActivityUsersAndOrderBy(@Param("sortField")String sortField);
+            "GROUP BY a.id\n";
 
-    @Query( value = "SELECT " +
+    @Query( value = "SELECT \n" +
             "a.id AS activityId,\n" +
-            "\t     a.activityname AS activityName,\n" +
-            "       c.categoryname AS categoryName,\n" +
-            "       COUNT(ua.activity_id) as countUsers\n" +
+            "a.activityname AS activityName,\n" +
+            "c.categoryname AS categoryName,\n" +
+            "COUNT(ca.activity_id) as countUsers\n" +
             "FROM actvt AS a\n" +
-            "LEFT JOIN user_activity AS ua ON ua.activity_id = a.id\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT activity_id\n" +
+            "    FROM user_activity AS ua\n" +
+            "    WHERE ua.status = \"CONFIRMED\"\n" +
+            ") AS ca ON ca.activity_id = a.id\n" +
+            "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
+            "GROUP BY a.id\n"
+//            "ORDER BY \n" +
+//                        "CASE WHEN :sortField = 'activityName' THEN activityName\n" +
+//                            "WHEN :sortField = 'categoryName' THEN categoryName\n" +
+//                            "WHEN :sortField = 'countUsers' THEN COUNT(ca.activity_id) END"
+            , countQuery = "SELECT COUNT(*) FROM actvt;"
+                            ,nativeQuery = true)
+    Page<ActivityUsersCounter> countActivityUsersAndOrderBy(@Param("sortField")String sortField, Pageable pageable);
+
+    @Query( value = "SELECT \n" +
+            "a.id AS activityId,\n" +
+            "a.activityname AS activityName,\n" +
+            "c.categoryname AS categoryName,\n" +
+            "COUNT(ca.activity_id) as countUsers\n" +
+            "FROM actvt AS a\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT activity_id\n" +
+            "    FROM user_activity AS ua\n" +
+            "    WHERE ua.status = 'CONFIRMED'\n" +
+            ") AS ca ON ca.activity_id = a.id\n" +
             "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
             "WHERE categoryName = :categoryName\n" +
-            "GROUP BY a.id  \n" +
+            "GROUP BY a.id\n" +
             "ORDER BY categoryName ASC",
             nativeQuery = true)
-    List<ActivityUsersCounter> countActivityUsersByCategoryName(@Param("categoryName")String categoryName);
+    Page<ActivityUsersCounter> countActivityUsersByCategoryName(@Param("categoryName")String categoryName, Pageable pageable);
 
-    @Query( value = "SELECT " +
+    @Query( value = "SELECT \n" +
             "a.id AS activityId,\n" +
-            "       a.activityname AS activityName,\n" +
-            "       c.categoryname AS categoryName,\n" +
-            "       COUNT(ua.activity_id) as countUsers\n" +
+            "a.activityname AS activityName,\n" +
+            "c.categoryname AS categoryName,\n" +
+            "COUNT(ca.activity_id) as countUsers\n" +
             "FROM actvt AS a\n" +
-            "LEFT JOIN user_activity AS ua ON ua.activity_id = a.id\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT activity_id\n" +
+            "    FROM user_activity AS ua\n" +
+            "    WHERE ua.status = 'CONFIRMED'\n" +
+            ") AS ca ON ca.activity_id = a.id\n" +
             "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
-            "WHERE c.categoryname IS NULL\n" +
-            "GROUP BY a.id  \n" +
+            "WHERE categoryName IS NULL\n" +
+            "GROUP BY a.id\n" +
             "ORDER BY categoryName ASC",
             nativeQuery = true)
-    List<ActivityUsersCounter> countActivityUsersWhereCategoryIsNull();
+    Page<ActivityUsersCounter> countActivityUsersWhereCategoryIsNull(Pageable pageable);
 }

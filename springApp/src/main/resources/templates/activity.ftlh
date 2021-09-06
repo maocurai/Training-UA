@@ -81,8 +81,9 @@
             <th scope="col"><button form="sortingForm" name="orderField" value="countUsers"><@spring.message "users.count"/></button></th>
             <input type="hidden" name="currentOrderDirection" value="${currentOrderDirection}"/>
         </thead>
+        <@p.pager url activities/>
         <tbody>
-            <#list activities as activity>
+            <#list activities.content as activity>
                 <tr>
                     <td>${activity.activityName}</td>
                     <td>
