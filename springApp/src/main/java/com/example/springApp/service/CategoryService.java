@@ -34,14 +34,11 @@ public class CategoryService {
     }
 
     public void delete(Category category) {
-<<<<<<< HEAD
         List<Activity> byCategoryId = activityService.findByCategoryId(category.getId());
         for(Activity activity: byCategoryId) {
             activity.setCategory(null);
             activityService.save(activity);
         }
-=======
->>>>>>> d2f05cf94c8f4164a55c4a226b1b661c79ecfd1c
         categoryRepo.delete(category);
     }
 }

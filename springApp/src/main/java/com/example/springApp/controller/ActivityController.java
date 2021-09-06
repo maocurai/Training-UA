@@ -72,6 +72,7 @@ public class ActivityController {
 
     ) {
         model.addAttribute("currentOrderDirection", "ASC");
+        model.addAttribute("activities", activityUsersCounterService.countActivityUsersByCategoryName(filter));
         model.addAttribute("categories", categoryService.findAll());
         return "activity";
     }
