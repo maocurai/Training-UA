@@ -22,9 +22,13 @@ public class ActivityUsersCounterService {
     }
 
     public List<ActivityUsersCounter> countActivityUsersByCategoryName(String categoryName) {
+<<<<<<< HEAD
         return (categoryName.equals("NULL")) ?
                 activityUsersCounterRepo.countActivityUsersWhereCategoryIsNull() :
                 activityUsersCounterRepo.countActivityUsersByCategoryName(categoryName);
+=======
+        return activityUsersCounterRepo.countActivityUsersByCategoryName(categoryName);
+>>>>>>> d2f05cf94c8f4164a55c4a226b1b661c79ecfd1c
     }
 
     public String changeSortingDirection(String currentOrderDirection) {

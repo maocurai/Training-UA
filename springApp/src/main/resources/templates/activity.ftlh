@@ -51,7 +51,6 @@
     <h3><@spring.message "all.activities"/></h3>
     <form action="/activity" id="categoryForm" method="post">
     <label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
-
             <select name="categoryname">
                 <#list categories as category>
                 <option value="${category.categoryname}">${category.categoryname}</option>
@@ -67,7 +66,11 @@
                             <#list categories as category>
                                 <option value="${category.categoryname}">${category.categoryname}</option>
                             </#list>
+<<<<<<< HEAD
                             <option value="NULL">No category</option>
+=======
+                            <option value="NULL"><@spring.message "without.category"/></option>
+>>>>>>> d2f05cf94c8f4164a55c4a226b1b661c79ecfd1c
                         </select>
                         <button class="btn btn-outline-danger" form="filterForm"><@spring.message "on"/></button>
                         <a href="/activity" class="btn btn-outline-danger" ><@spring.message "off"/></a>
@@ -87,10 +90,17 @@
                 <tr>
                     <td>${activity.activityName}</td>
                     <td>
+<<<<<<< HEAD
                         <#if (activity.categoryName)??>
                             ${activity.categoryName}
                         <#else>
                             No category
+=======
+                        <#if (activity.categoryName??)>
+                            ${activity.categoryName}
+                        <#else>
+                            <@spring.message "without.category"/>
+>>>>>>> d2f05cf94c8f4164a55c4a226b1b661c79ecfd1c
                         </#if>
                     </td>
                     <td>${activity.countUsers}</td>

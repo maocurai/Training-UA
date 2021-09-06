@@ -20,7 +20,11 @@ public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> 
             "FROM actvt AS a\n" +
             "LEFT JOIN user_activity AS ua ON ua.activity_id = a.id\n" +
             "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
+<<<<<<< HEAD
 //            "WHERE ua.status = 'CONFIRMED' OR ua.activity_id IS NULL\n" +
+=======
+            "WHERE ua.status = 'CONFIRMED' OR ua.user_id IS NULL\n" +
+>>>>>>> d2f05cf94c8f4164a55c4a226b1b661c79ecfd1c
             "GROUP BY a.id  \n" +
             "ORDER BY " +
                         "CASE WHEN :sortField = 'activityName' THEN activityName\n" +
@@ -37,11 +41,16 @@ public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> 
             "FROM actvt AS a\n" +
             "LEFT JOIN user_activity AS ua ON ua.activity_id = a.id\n" +
             "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
+<<<<<<< HEAD
             "WHERE categoryName = :categoryName\n" +
+=======
+            "WHERE c.categoryname = :categoryName\n" +
+>>>>>>> d2f05cf94c8f4164a55c4a226b1b661c79ecfd1c
             "GROUP BY a.id  \n" +
             "ORDER BY categoryName ASC",
             nativeQuery = true)
     List<ActivityUsersCounter> countActivityUsersByCategoryName(@Param("categoryName")String categoryName);
+<<<<<<< HEAD
 
     @Query( value = "SELECT " +
             "a.id AS activityId,\n" +
@@ -56,4 +65,6 @@ public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> 
             "ORDER BY categoryName ASC",
             nativeQuery = true)
     List<ActivityUsersCounter> countActivityUsersWhereCategoryIsNull();
+=======
+>>>>>>> d2f05cf94c8f4164a55c4a226b1b661c79ecfd1c
 }
