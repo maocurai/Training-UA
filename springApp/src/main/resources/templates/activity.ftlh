@@ -51,7 +51,6 @@
     <h3><@spring.message "all.activities"/></h3>
     <form action="/activity" id="categoryForm" method="post">
     <label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
-
             <select name="categoryname">
                 <#list categories as category>
                 <option value="${category.categoryname}">${category.categoryname}</option>
@@ -65,8 +64,9 @@
     <label><@spring.message "filter.by"/></label>
                         <select name="filter">
                             <#list categories as category>
-                                <option value="${category.id}">${category.categoryname}</option>
+                                <option value="${category.categoryname}">${category.categoryname}</option>
                             </#list>
+                            <option value="NULL"><@spring.message "without.category"/></option>
                         </select>
                         <button class="btn btn-outline-danger" form="filterForm"><@spring.message "on"/></button>
                         <a href="/activity" class="btn btn-outline-danger" ><@spring.message "off"/></a>
@@ -81,11 +81,18 @@
             <th scope="col"><button form="sortingForm" name="orderField" value="countUsers"><@spring.message "users.count"/></button></th>
             <input type="hidden" name="currentOrderDirection" value="${currentOrderDirection}"/>
         </thead>
+        <@p.pager url activities/>
         <tbody>
-            <#list activities as activity>
+            <#list activities.content as activity>
                 <tr>
                     <td>${activity.activityName}</td>
-                    <td>${activity.categoryName}</td>
+                    <td>
+                        <#if (activity.categoryName??)>
+                            ${activity.categoryName}
+                        <#else>
+                            <@spring.message "without.category"/>
+                        </#if>
+                    </td>
                     <td>${activity.countUsers}</td>
                 </tr>
             </#list>

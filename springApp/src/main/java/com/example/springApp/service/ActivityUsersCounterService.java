@@ -3,6 +3,8 @@ package com.example.springApp.service;
 import com.example.springApp.repos.ActivityUsersCounter;
 import com.example.springApp.repos.ActivityUsersCounterRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -17,20 +19,22 @@ public class ActivityUsersCounterService {
         this.activityUsersCounterRepo = activityUsersCounterRepo;
     }
 
-    public List<ActivityUsersCounter> countActivityUsersAndOrderBy(String sortField) {
-        return activityUsersCounterRepo.countActivityUsersAndOrderBy(sortField);
+    public Page<ActivityUsersCounter> countActivityUsersAndOrderBy(String sortField, Pageable pageable) {
+        return activityUsersCounterRepo.countActivityUsersAndOrderBy(sortField, pageable);
     }
 
-    public List<ActivityUsersCounter> countActivityUsersByCategoryId(Long categoryId) {
-        return activityUsersCounterRepo.countActivityUsersByCategoryId(categoryId);
+    public Page<ActivityUsersCounter> countActivityUsersByCategoryName(String categoryName, Pageable pageable) {
+        return (categoryName.equals("NULL")) ?
+                activityUsersCounterRepo.countActivityUsersWhereCategoryIsNull(pageable) :
+                activityUsersCounterRepo.countActivityUsersByCategoryName(categoryName, pageable);
     }
 
     public String changeSortingDirection(String currentOrderDirection) {
         return currentOrderDirection.equals("ASC") ? "DESC" : "ASC";
     }
 
-    public List setOrderDirection(List list, String orderDirection) {
-        if (!orderDirection.equals("ASC")) Collections.reverse(list);
+    public List setOrderDirection(List list, String currentOrderDirection) {
+        if (!currentOrderDirection.equals("ASC")) Collections.reverse(list);
         return list;
     }
 }

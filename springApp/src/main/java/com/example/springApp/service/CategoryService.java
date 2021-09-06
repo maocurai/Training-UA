@@ -1,20 +1,24 @@
 package com.example.springApp.service;
 
+import com.example.springApp.domain.Activity;
 import com.example.springApp.domain.Category;
+import com.example.springApp.repos.ActivityRepo;
 import com.example.springApp.repos.CategoryRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class CategoryService {
 
     private final CategoryRepo categoryRepo;
+    private final ActivityService activityService;
 
-    public CategoryService(CategoryRepo categoryRepo) {
+    public CategoryService(CategoryRepo categoryRepo, ActivityService activityService) {
         this.categoryRepo = categoryRepo;
+        this.activityService = activityService;
     }
 
     public Category loadCategoryByCategoryname(String categoryname) {
@@ -30,6 +34,11 @@ public class CategoryService {
     }
 
     public void delete(Category category) {
-        categoryRepo.save(category);
+        List<Activity> byCategoryId = activityService.findByCategoryId(category.getId());
+        for(Activity activity: byCategoryId) {
+            activity.setCategory(null);
+            activityService.save(activity);
+        }
+        categoryRepo.delete(category);
     }
 }
