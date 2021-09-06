@@ -1,0 +1,9 @@
+diff a/springApp/src/main/java/com/example/springApp/controller/ActivityController.java b/springApp/src/main/java/com/example/springApp/controller/ActivityController.java	(rejected hunks)
+@@ -72,6 +72,7 @@
+ 
+     ) {
+         model.addAttribute("currentOrderDirection", "ASC");
++        model.addAttribute("activities", activityUsersCounterService.countActivityUsersByCategoryName(filter));
+         model.addAttribute("categories", categoryService.findAll());
+         return "activity";
+     }
