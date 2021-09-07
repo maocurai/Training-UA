@@ -18,6 +18,11 @@ List of users
                 <td>${user.role}</td>
                 <td><a href="/user/info/${user.id}" class="btn btn-outline-success" ><@spring.message "more"/></td>
                 <td><a href="/user/${user.id}" class="btn btn-outline-success" ><@spring.message "edit"/></a></td>
+<#--                <#if user.active>-->
+<#--                <td><a href="/user/${user.id}" class="btn btn-outline-success" ><@spring.message "edit"/></a></td>-->
+<#--                <#else>-->
+<#--                <td><a href="/user/${user.id}" class="btn btn-outline-success" ><@spring.message "edit"/></a></td>-->
+<#--                </#if>-->
             </tr>
         </#list>
     </tbody>

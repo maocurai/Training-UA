@@ -5,6 +5,7 @@ import com.example.springApp.repos.ActivityUsersCounterRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -19,8 +20,8 @@ public class ActivityUsersCounterService {
         this.activityUsersCounterRepo = activityUsersCounterRepo;
     }
 
-    public Page<ActivityUsersCounter> countActivityUsersAndOrderBy(String sortField, Pageable pageable) {
-        return activityUsersCounterRepo.countActivityUsersAndOrderBy(sortField, pageable);
+    public Page<ActivityUsersCounter> countActivityUsers(Pageable pageable) {
+        return activityUsersCounterRepo.countActivityUsers(pageable);
     }
 
     public Page<ActivityUsersCounter> countActivityUsersByCategoryName(String categoryName, Pageable pageable) {
@@ -33,8 +34,7 @@ public class ActivityUsersCounterService {
         return currentOrderDirection.equals("ASC") ? "DESC" : "ASC";
     }
 
-    public List setOrderDirection(List list, String currentOrderDirection) {
-        if (!currentOrderDirection.equals("ASC")) Collections.reverse(list);
-        return list;
+    public Sort setSort(String orderField, String currentDirection) {
+        return currentDirection.equals("ASC") ? Sort.by(orderField).descending() : Sort.by(orderField).ascending();
     }
 }

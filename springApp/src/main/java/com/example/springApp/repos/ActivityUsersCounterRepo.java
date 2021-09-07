@@ -14,20 +14,6 @@ import java.util.List;
 @Repository
 public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> {
 
-    String query = "SELECT \n" +
-            "a.id AS activityId,\n" +
-            "a.activityname AS activityName,\n" +
-            "c.categoryname AS categoryName,\n" +
-            "COUNT(ca.activity_id) as countUsers\n" +
-            "FROM actvt AS a\n" +
-            "LEFT JOIN (\n" +
-            "    SELECT activity_id\n" +
-            "    FROM user_activity AS ua\n" +
-            "    WHERE ua.status = \"CONFIRMED\"\n" +
-            ") AS ca ON ca.activity_id = a.id\n" +
-            "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
-            "GROUP BY a.id\n";
-
     @Query( value = "SELECT \n" +
             "a.id AS activityId,\n" +
             "a.activityname AS activityName,\n" +
@@ -47,7 +33,7 @@ public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> 
 //                            "WHEN :sortField = 'countUsers' THEN COUNT(ca.activity_id) END"
             , countQuery = "SELECT COUNT(*) FROM actvt;"
                             ,nativeQuery = true)
-    Page<ActivityUsersCounter> countActivityUsersAndOrderBy(@Param("sortField")String sortField, Pageable pageable);
+    Page<ActivityUsersCounter> countActivityUsers(Pageable pageable);
 
     @Query( value = "SELECT \n" +
             "a.id AS activityId,\n" +
@@ -62,8 +48,8 @@ public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> 
             ") AS ca ON ca.activity_id = a.id\n" +
             "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
             "WHERE categoryName = :categoryName\n" +
-            "GROUP BY a.id\n" +
-            "ORDER BY categoryName ASC",
+            "GROUP BY a.id\n",
+            countQuery = "SELECT COUNT(*) FROM actvt WHERE category_id = (SELECT id FROM ctgr WHERE categoryName = :categoryName)",
             nativeQuery = true)
     Page<ActivityUsersCounter> countActivityUsersByCategoryName(@Param("categoryName")String categoryName, Pageable pageable);
 
@@ -80,8 +66,8 @@ public interface ActivityUsersCounterRepo extends JpaRepository<Activity, Long> 
             ") AS ca ON ca.activity_id = a.id\n" +
             "LEFT JOIN ctgr AS c ON c.id = a.category_id\n" +
             "WHERE categoryName IS NULL\n" +
-            "GROUP BY a.id\n" +
-            "ORDER BY categoryName ASC",
+            "GROUP BY a.id\n",
+            countQuery = "SELECT COUNT(*) FROM actvt WHERE category_id IS NULL",
             nativeQuery = true)
     Page<ActivityUsersCounter> countActivityUsersWhereCategoryIsNull(Pageable pageable);
 }

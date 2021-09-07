@@ -17,11 +17,11 @@ class ActivityUsersCounterServiceTest {
 //        Assert.assertEquals("DESC", activityUsersCounterService.changeSortingDirection("ASC"));
     }
 
-    @Test
-    void setOrderDirection() {
-        List<String> testList = List.of("1", "2", "3");
-        Collections.reverse(testList);
-        List testListDesc = activityUsersCounterService.setOrderDirection(testList, "DESC");
-//        Assert.assertTrue(testList.equals(testListDesc));
-    }
+//    @Test
+//    void setOrderDirection() {
+//        List<String> testList = List.of("1", "2", "3");
+//        Collections.reverse(testList);
+//        List testListDesc = activityUsersCounterService.setOrderDirection(testList, "DESC");
+////        Assert.assertTrue(testList.equals(testListDesc));
+//    }
 }
