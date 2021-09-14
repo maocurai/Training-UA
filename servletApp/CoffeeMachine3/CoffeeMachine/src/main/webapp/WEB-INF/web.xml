@@ -38,6 +38,16 @@
     <url-pattern>/users</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>UserEditServlet</servlet-name>
+    <servlet-class>org.itstep.controller.listener.UserEditServlet</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserEditServlet</servlet-name>
+    <url-pattern>/users/</url-pattern>
+  </servlet-mapping>
+
   <filter>
     <filter-name>EncodingFilter</filter-name>
     <filter-class>org.itstep.controller.filters.EncodingFilter</filter-class>

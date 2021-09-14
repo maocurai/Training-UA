@@ -9,7 +9,7 @@
     <ul class="nav nav-pills flex-column mb-auto">
         <c:if test="${sessionScope.isAdmin}">
         <li class="nav-item">
-        <a href="/user" class="nav-link link-dark" aria-current="page">
+        <a href="${pageContext.request.contextPath}/users" class="nav-link link-dark" aria-current="page">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
 <%--          <@spring.message "admin.users"/>--%>users
         </a>

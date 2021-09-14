@@ -16,7 +16,7 @@ public class TimeAccountingDB {
     static
     {
         try {
-            String url = "jdbc:mysql://localhost:3306/timeaccounting?useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/time_accounting?useSSL=false";
             String user = "root";
             String pass = "";
             Class.forName("com.mysql.jdbc.Driver");

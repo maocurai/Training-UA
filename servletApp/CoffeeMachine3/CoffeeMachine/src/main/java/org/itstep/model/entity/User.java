@@ -1,8 +1,10 @@
 package org.itstep.model.entity;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public class User {
 
-    private Long id;
+    private Integer id;
     private String username;
     private String password;
     private boolean active;
@@ -21,13 +23,9 @@ public class User {
         return role.toString();
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Integer id) { this.id = id; }
 
     public String getUsername() {
         return username;

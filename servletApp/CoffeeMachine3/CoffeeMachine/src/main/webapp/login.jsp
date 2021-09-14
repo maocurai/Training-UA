@@ -13,7 +13,7 @@
             <input type="password" name="pass" class="form-control mt-1" placeholder="Password" style="width: 30%;">
                 <%--            <input type="hidden" name="_csrf" value="${_csrf.token}" />--%>
             <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">sign.in</button>
-            <a href="${pageContext.request.contextPath}/app/logout">На головну</a>
+            <a href="${pageContext.request.contextPath}/registration">register now</a>
         </div>
     </form>
 </t:startwrapper>

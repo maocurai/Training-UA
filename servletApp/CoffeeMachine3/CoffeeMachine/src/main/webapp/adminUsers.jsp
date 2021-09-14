@@ -18,8 +18,8 @@ List of users
     <tr>
         <td>${user.username}</td>
         <td>${user.role}</td>
-        <td><a href="/user/info/${user.id}" class="btn btn-outline-success" >more</a></td>
-        <td><a href="/user/${user.id}" class="btn btn-outline-success" >edit</a></td>
+        <td><a href="${pageContext.request.contextPath}/user/info/${user.id}" class="btn btn-outline-success" >more</a></td>
+        <td><a href="${pageContext.request.contextPath}/user/${user.id}" class="btn btn-outline-success" >edit</a></td>
     </tr>
     </c:forEach>
     </tbody>

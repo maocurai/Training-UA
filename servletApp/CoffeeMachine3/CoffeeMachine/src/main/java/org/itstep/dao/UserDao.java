@@ -18,7 +18,7 @@ import org.itstep.mysql.TimeAccountingDB;
 public class UserDao implements CrudDao<User> {
 
     public User findByNameAndPassword(String name, String password) throws NoSuchUserException {
-        String SELECT_USER = "SELECT * FROM `usr` WHERE username=? and password=?";
+        String SELECT_USER = "SELECT * FROM `users` WHERE username=? and password=?";
         try {
             PreparedStatement preparedStatement = TimeAccountingDB.prepareStatement(SELECT_USER);
             preparedStatement.setString(1, name);
@@ -33,7 +33,7 @@ public class UserDao implements CrudDao<User> {
     }
 
     public boolean isExists(String name, String password) {
-        String SELECT_USER = "SELECT * FROM `usr` WHERE username=? and password=?";
+        String SELECT_USER = "SELECT * FROM `users` WHERE username=? and password=?";
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -55,15 +55,15 @@ public class UserDao implements CrudDao<User> {
 
     @Override
     public void save(User user) {
-        String INSERT_USERS_SQL = "INSERT INTO `users`(`username`, `password`, `isActive`) VALUES (?, ?, ?, ?)";
+        String INSERT_USERS_SQL = "INSERT INTO `users`(`username`, `password`, `role`, `isActive`) VALUES (?,?, ?,?)";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = TimeAccountingDB.prepareStatement(INSERT_USERS_SQL);
-        preparedStatement.setBoolean(1, user.isActive());
-        preparedStatement.setString(2, user.getPassword());
-        preparedStatement.setString(3, user.getRole());
-        preparedStatement.setString(4, user.getUsername());
-        preparedStatement.executeUpdate();
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getRole());
+            preparedStatement.setBoolean(4, user.isActive());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -81,14 +81,14 @@ public class UserDao implements CrudDao<User> {
 
     @Override
     public List<User> findAll() {
-        String GET_ALL_USERS_SQL = "SELECT * FROM usr";
-        List<User> usersList = new ArrayList<>();
+        String GET_ALL_USERS_SQL = "SELECT * FROM users";
+        List<User> usersList = new ArrayList<User>();
         ResultSet rs = null;
         try {
             rs = TimeAccountingDB.getResultSet(GET_ALL_USERS_SQL);
-             while (rs.next()) {
-                 usersList.add(createUser(rs));
-        }
+            while (rs.next()) {
+                usersList.add(createUser(rs));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,11 +97,11 @@ public class UserDao implements CrudDao<User> {
 
     public User createUser(ResultSet rs) throws SQLException {
         User user = new User();
-        user.setId(rs.getLong(1));
-        user.setActive(rs.getBoolean(2));
+        user.setId(rs.getInt(1));
+        user.setUsername(rs.getString(2));
         user.setPassword(rs.getString(3));
         user.setRole(Role.valueOf(rs.getString(4)));
-        user.setUsername(rs.getString(5));
+        user.setActive(rs.getBoolean(5));
         return user;
     }
 }
