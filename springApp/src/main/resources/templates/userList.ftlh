@@ -3,12 +3,13 @@
 <#import "/spring.ftl" as spring/>
 
 <@c.page>
-List of users
+<p class="h3 mt-5"><@spring.message "user.list"/></p>
 <table class="table table-striped mt-3">
     <thead>
         <tr>
-        <th>Name</th>
-        <th>Role</th>
+        <th><@spring.message "user.name"/></th>
+        <th><@spring.message "user.role"/></th>
+        <th colspan="2"><@spring.message "user.action"/></th>
         </tr>
     </thead>
     <tbody>

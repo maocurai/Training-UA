@@ -25,10 +25,10 @@
 <body>
 <@nav.navbar />
 <div class="row g-5">
-      <div class="col-md-5 col-lg-8 order-md-last">
+      <div class="col-md-5 col-lg-9 order-md-last">
         <#nested>
       </div>
-      <div class="col-md-7 col-lg-4">
+      <div class="col-md-7 col-lg-3">
       <@sb.sidebar />
       </div>
 </div>

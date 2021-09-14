@@ -5,7 +5,7 @@
 <#import "parts/pager.ftlh" as p>
 
 <@c.page>
-<h1 class="mt-5"><@spring.message "activity.control"/></h1>
+    <p class="h3 mt-5"><@spring.message "activity.control"/></p>
         <#if !isAdmin>
             <h3><@spring.message "all.activities"/></h3>
             <table class="table table-striped mt-3">
@@ -48,7 +48,7 @@
         </#if>
 
 <#if isAdmin>
-    <h3><@spring.message "all.activities"/></h3>
+    <p class="h3 mt-5"><@spring.message "activity.control"/></p>
     <form action="/activity" id="categoryForm" method="post">
     <label><@spring.message "activity.name"/><input type="text" name="activityname"/> </label>
             <select name="categoryname">
@@ -71,6 +71,7 @@
                         <button class="btn btn-outline-danger" form="filterForm"><@spring.message "on"/></button>
                         <a href="/activity" class="btn btn-outline-danger" ><@spring.message "off"/></a>
                     </form>
+
 <form action="/activity/sort" id="sortingForm" method="get">
     <table class="table table-striped mt-3">
         <thead>
@@ -82,6 +83,7 @@
             <input type="hidden" name="currentOrderDirection" value="${currentOrderDirection}"/>
         </thead>
         <@p.pager url activities/>
+        <p class="h4 mt-3"><@spring.message "all.activities"/></p>
         <tbody>
             <#list activities.content as activity>
                 <tr>

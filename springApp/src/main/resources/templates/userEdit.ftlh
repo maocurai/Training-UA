@@ -5,9 +5,13 @@
 
 <@c.page>
 <#if isAdmin>
-User editor
+    <p class="h3 mt-5"><@spring.message "edit"/> ${userToEdit.username}</p>
+    <p class="h3 mt-3"><@spring.message "user.name"/></p>
     <form action="/user" method="post">
-        <input type="text" name="username" placeholder="${userToEdit.username}" value="${userToEdit.username}">
+        <div>
+            
+            <input type="text" name="username" placeholder="${userToEdit.username}" value="${userToEdit.username}">
+        </div>
         <#list roles as role>
             <div>
                 <p><input type="radio" name="${role}">${role}</p>

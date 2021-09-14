@@ -3,15 +3,16 @@
 <#import "/spring.ftl" as spring/>
 
 <@c.page>
-<h2>User ${user.username} info</h2>
-<h3>Role ${user.role}</h3>
+    <p class="h5 mt-5"><@spring.message "user.name"/>: ${user.username}</p>
+    <p class="h5 mt-1"><@spring.message "user.role"/>: ${user.role}</p>
+    <p class="h5 mt-1"><@spring.message "activity.total"/>: ${usersActivities?size}</p>
 <table class="table table-striped mt-3">
     <thead>
         <tr>
             <th><@spring.message "all.activities"/></th>
-            <th>Activity start</th>
-            <th>Activity end</th>
-            <th>Activity status</th>
+            <th><@spring.message "activity.start"/></th>
+            <th><@spring.message "activity.end"/></th>
+            <th><@spring.message "activity.status"/></th>
         </tr>
     </thead>
 <tbody>
@@ -37,7 +38,6 @@
                 <td>${userActivity.status}</td>
             </tr>
     </#list>
-    <tfoot>Total activities: ${usersActivities?size}</tfoot>
     </tbody>
 </table>
 </@c.page>

@@ -3,7 +3,7 @@
 <#import "/spring.ftl" as spring/>
 
 <@c.page>
-<h1 class="mt-5"><@spring.message "category.control"/></h1>
+<p class="h3 mt-5"><@spring.message "category.control"/></p>
 <form action="/category/add" method="post">
 <div class="row g-5 mt-3">
     <div class="col-md-6 col-lg-6 order-md-last">
